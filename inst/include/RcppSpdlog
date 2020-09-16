@@ -1,0 +1,7 @@
+//                                               Emacs make this -*- mode: C++; -*-
+// RcppSpdlog -- wrapping spdlog for use with R
+
+#include "spdlog/spdlog.h"      // spdlog
+
+#include "rcpp_sink.h"          // a custom R sink using Rcpp::Rcout
+				// (and Rcpp.h is included too)
