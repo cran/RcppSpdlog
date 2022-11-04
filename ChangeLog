@@ -1,3 +1,48 @@
+2022-11-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Version 0.0.9
+
+2022-11-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro release version
+
+	* inst/include/spdlog/*: New upstream release spdlog 1.11.0
+
+ 	* vignettes/introduction.md: Small edits
+
+2022-11-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/introduction.md: New sections for access from R and C++
+
+2022-11-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro release version
+
+	* inst/include/RcppSpdlog: Ad second shorter namespace 'spdl' with
+	shorter (inlined) function names as simpler accessors
+
+ 	* vignettes/introduction.md: Two new sections on access from R and
+	C++, respectively
+
+2022-10-31  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro release version
+
+2022-10-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro release version
+
+	* src/interface.cpp: Add R interface to spdlog
+	* man/log_setup.Rd: Documentation
+
+	* .github/workflows/ci.yaml (jobs): Update to actions/checkout@v3
+
+	* src/interface.cpp: Activate R and C++ interface generation
+	* R/RcppExports.R: Updated accordingly
+	* src/RcppExports.cpp: Idem
+	* inst/include/RcppSpdlog.h: Generated
+	* inst/include/RcppSpdlog_RcppExports.h: Idem
+
 2022-04-04  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Version 0.0.8

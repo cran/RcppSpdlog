@@ -3,6 +3,15 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppspdlog/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppspdlog/issues/#1}{##1}}
 
+\section{Changes in RcppSpdlog version 0.0.9 (2022-11-04)}{
+  \itemize{
+    \item Add both an R and an C++ interface to \code{spdlog}
+    \item Update GitHub Actions to checkout@v3
+    \item Add a shorter aliased namespace for C++
+    \item Upgraded to upstream releases spdlog 1.11.0
+  }
+}
+
 \section{Changes in RcppSpdlog version 0.0.8 (2022-04-04)}{
   \itemize{
     \item Upgraded to upstream releases spdlog 1.10.0
