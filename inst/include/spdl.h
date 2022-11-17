@@ -1,8 +1,11 @@
 
 #pragma once
 
-// include the auto-generated exports for the exported C++ functions
+// includes the auto-generated exports for the exported (via a C interface) underlying C++ functions
 #include <RcppSpdlog.h>
+
+// expose fmt::format via the courses in spdlog
+#include <spdlog/fmt/fmt.h>
 
 // for convenience define cuter ones in another (shorter) namespace
 namespace spdl {
@@ -16,4 +19,29 @@ namespace spdl {
     inline void warn(const std::string& s) { RcppSpdlog::log_warn(s); }
     inline void error(const std::string& s) { RcppSpdlog::log_error(s); }
     inline void critical(const std::string& s) { RcppSpdlog::log_critical(s); }
+
+    // it is highly unlikely we find a package imposing C++98 as R itself now defaults to C++14
+    // and many packages have opted into C++11 (or newer) but the check does not hurt
+    #if __cplusplus >= 201103L
+
+    template <typename... Args>
+    inline void trace(const char* fmt, Args&&... args ) { RcppSpdlog::log_trace(fmt::format(fmt, std::forward<Args>(args)... ).c_str()); }
+
+    template <typename... Args>
+    inline void debug(const char* fmt, Args&&... args ) { RcppSpdlog::log_debug(fmt::format(fmt, std::forward<Args>(args)... ).c_str()); }
+
+    template <typename... Args>
+    inline void info(const char* fmt, Args&&... args ) { RcppSpdlog::log_info(fmt::format(fmt, std::forward<Args>(args)... ).c_str()); }
+
+    template <typename... Args>
+    inline void warn(const char* fmt, Args&&... args ) { RcppSpdlog::log_warn(fmt::format(fmt, std::forward<Args>(args)... ).c_str()); }
+
+    template <typename... Args>
+    inline void error(const char* fmt, Args&&... args ) { RcppSpdlog::log_error(fmt::format(fmt, std::forward<Args>(args)... ).c_str()); }
+
+    template <typename... Args>
+    inline void critical(const char* fmt, Args&&... args ) { RcppSpdlog::log_critical(fmt::format(fmt, std::forward<Args>(args)... ).c_str()); }
+
+    #endif // if C++11
+
 }
