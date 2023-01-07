@@ -3,6 +3,14 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppspdlog/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppspdlog/issues/#1}{##1}}
 
+\section{Changes in RcppSpdlog version 0.0.12 (2023-01-07)}{
+  \itemize{
+    \item Addeed support for 'stopwatch' object allowing for simple timing
+    (from both C++ and R) via the logging framework.
+    \item The \sQuote{spdlog} logging pattern is documented via a reference.
+  }
+}
+
 \section{Changes in RcppSpdlog version 0.0.11 (2022-12-13)}{
   \itemize{
     \item Export the formatter at C level

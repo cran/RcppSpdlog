@@ -75,6 +75,9 @@ formatter <- function(s, v) {
 #' \sQuote{critical}.  A message issued below the current threshold is not displayed whereas
 #' a message at or above the current threshold is displayed.  The default level is \sQuote{warn}.
 #'
+#' @seealso The logging pattern format is described in at the repo in the page
+#' \url{https://github.com/gabime/spdlog/wiki/3.-Custom-formatting}.
+#'
 #' @param name A character variable with the logging instance name, default value is \sQuote{default}.
 #' @param level A character variable with the default logging level, default value is \sQuote{warn}.
 #' @param s A character variable with the logging pattern, level or message.
@@ -142,6 +145,48 @@ log_error <- function(s) {
 #' @rdname log_setup
 log_critical <- function(s) {
     invisible(.Call(`_RcppSpdlog_log_critical`, s))
+}
+
+#' R Accessor Functions for spdlog Stopwatch
+#'
+#' A set of functions provides access to the \code{spdlog} stopwatch facilty. As \code{stopwatch}
+#' object is a simple container around a C++ \code{std::chrono} object which (essentially) reports
+#' elapsed-time since creation. The object is exported to R via an external pointer permitting use
+#' from both R and C++.
+#'
+#' Several functions are provided:
+#' \describe{
+#'    \item{\code{get_stopwatch}}{Returns a stopwatch object (as an S3 object).}
+#'    \item{\code{elapsed_stopwatch}}{Returns elapsed time for stopwatch in seconds.}
+#'    \item{\code{format_stopwatch}}{Returns elapsed time for stopwatch as character variable.}
+#' }
+#' The \code{stopwatch} object has \code{print} and \code{format} methods.
+#'
+#' @param sw An S3 object of type \code{stopwatch}.
+#' @param x An S3 object of type \code{stopwatch}.
+#' @param ... Dotted argument required by generic, unused here.
+#'
+#' @return The desired object is returned: respectively, a stopwatch object as an external pointer
+#' in an S3 class, the elapsed time in seconds as a double, or formatted as a character variable.
+#'
+#' @examples
+#' w <- get_stopwatch()
+#' Sys.sleep(0.2)
+#' elapsed_stopwatch(w)
+#' format_stopwatch(w)
+#' @rdname get_stopwatch
+get_stopwatch <- function() {
+    .Call(`_RcppSpdlog_get_stopwatch`)
+}
+
+#' @rdname get_stopwatch
+elapsed_stopwatch <- function(sw) {
+    .Call(`_RcppSpdlog_elapsed_stopwatch`, sw)
+}
+
+#' @rdname get_stopwatch
+format_stopwatch <- function(sw) {
+    .Call(`_RcppSpdlog_format_stopwatch`, sw)
 }
 
 # Register entry points for exported C++ functions

@@ -51,7 +51,7 @@
     code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
     code span.at { color: #7d9029; } /* Attribute */
     code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
+    code span.bu { color: #008000; } /* BuiltIn */
     code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
     code span.ch { color: #4070a0; } /* Char */
     code span.cn { color: #880000; } /* Constant */
@@ -64,7 +64,7 @@
     code span.ex { } /* Extension */
     code span.fl { color: #40a070; } /* Float */
     code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
     code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
     code span.kw { color: #007020; font-weight: bold; } /* Keyword */
     code span.op { color: #666666; } /* Operator */
@@ -155,15 +155,13 @@ background-color: unset;
 color: unset;
 }
 </style>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
 <h1 class="title">Introduction to RcppSpdlog</h1>
 <p class="author">Dirk Eddelbuettel</p>
-<p class="date">Initial version dated October 2020. Expanded November 2022.</p>
+<p class="date">Initial version dated October 2020. Expanded November
+2022.</p>
 </header>
 <!--
 %\VignetteIndexEntry{Introduction to RcppSpdlog}
@@ -171,12 +169,30 @@ color: unset;
 %\VignetteEncoding{UTF-8}
 -->
 <h2 id="introducing-rcppspdlog">Introducing RcppSpdlog</h2>
-<p><a href="https://github.com/gabime/spdlog">spdlog</a> is a widely-used and very capable header-only C++ library for logging. The <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> package provides R users with easy-to-use customized access to the <a href="https://github.com/gabime/spdlog">spdlog</a> logging library by including its headers in an R package which permit other R packages to deploy it via a simple <code>LinkingTo: RcppSpdlog</code> as described in <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies">Section 1.1.3 of WRE</a>.</p>
-<p><a href="https://github.com/gabime/spdlog">spdlog</a> is mature and widely deployed. It also has a very rich set of features described at <a href="https://github.com/gabime/spdlog/wiki">the repository wiki</a>. This vignette will highlight a few first use cases.</p>
-<p>Note that in order to use <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> in an R package that might get distributed to <a href="https://cran.r-project.org">CRAN</a>, the code should follow the example R and C++ code in function <code>exampleRsink()</code> as described below.</p>
-<p>We will however start with some simpler examples. <em>Do not copy those into your R package.</em> The package checks used by R test for use of <code>stdout</code> and <code>stderr</code> which is why the customized setup described later is preferable.</p>
+<p><a href="https://github.com/gabime/spdlog">spdlog</a> is a
+widely-used and very capable header-only C++ library for logging. The <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> package
+provides R users with easy-to-use customized access to the <a href="https://github.com/gabime/spdlog">spdlog</a> logging library by
+including its headers in an R package which permit other R packages to
+deploy it via a simple <code>LinkingTo: RcppSpdlog</code> as described
+in <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-Dependencies">Section
+1.1.3 of WRE</a>.</p>
+<p><a href="https://github.com/gabime/spdlog">spdlog</a> is mature and
+widely deployed. It also has a very rich set of features described at <a href="https://github.com/gabime/spdlog/wiki">the repository wiki</a>.
+This vignette will highlight a few first use cases.</p>
+<p>Note that in order to use <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> in an R
+package that might get distributed to <a href="https://cran.r-project.org">CRAN</a>, the code should follow the
+example R and C++ code in function <code>exampleRsink()</code> as
+described below.</p>
+<p>We will however start with some simpler examples. <em>Do not copy
+those into your R package.</em> The package checks used by R test for
+use of <code>stdout</code> and <code>stderr</code> which is why the
+customized setup described later is preferable.</p>
 <h2 id="initial-example-basics">Initial example: Basics</h2>
-<p>This example follows the simplest and initial example in the <a href="https://github.com/gabime/spdlog">spdlog</a>. It is also included in the <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> package as <a href="https://github.com/eddelbuettel/rcppspdlog/blob/master/inst/examples/exampleOne.cpp">examples/exampleOne.cpp</a>. As discussed above, do not use this example as a starting point in an R package.</p>
+<p>This example follows the simplest and initial example in the <a href="https://github.com/gabime/spdlog">spdlog</a>. It is also included
+in the <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> package
+as <a href="https://github.com/eddelbuettel/rcppspdlog/blob/master/inst/examples/exampleOne.cpp">examples/exampleOne.cpp</a>.
+As discussed above, do not use this example as a starting point in an R
+package.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// based on the &#39;basic usage&#39; example in the README.md at https://github.com/gabime/spdlog</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/spdlog.h&quot;</span></span>
@@ -213,7 +229,9 @@ color: unset;
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">/*** R</span></span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">exampleOne()</span></span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div>
-<p>When built, which is easiest via <code>Rcpp::sourceCpp()</code>, the final block ensures that the created function <code>exampleOne()</code> is executed. In one previous run, the following output was produded:</p>
+<p>When built, which is easiest via <code>Rcpp::sourceCpp()</code>, the
+final block ensures that the created function <code>exampleOne()</code>
+is executed. In one previous run, the following output was produded:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> exampleOne<span class="er">(</span><span class="kw">)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362024]</span> [I] [thread 2453030] Welcome to spdlog!</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362047]</span> [E] [thread 2453030] Some error message with arg: 1</span>
@@ -224,9 +242,19 @@ color: unset;
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362060]</span> [I] [thread 2453030] left aligned</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362061]</span> [D] [thread 2453030] This message should be displayed..</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span></span></code></pre></div>
-<p>We note the easy-to-formatting in the source which benefits from the embedded <a href="https://github.com/fmtlib/fmt">fmt</a> package for easy-to-use variable expansion. We also notice the different logging “levels” indicated by single letters: <em>info</em>, <em>errror</em>, <em>warning</em>, <em>critical</em> and <em>debug</em>. More on this below.</p>
+<p>We note the easy-to-formatting in the source which benefits from the
+embedded <a href="https://github.com/fmtlib/fmt">fmt</a> package for
+easy-to-use variable expansion. We also notice the different logging
+“levels” indicated by single letters: <em>info</em>, <em>errror</em>,
+<em>warning</em>, <em>critical</em> and <em>debug</em>. More on this
+below.</p>
 <h2 id="second-example-showcase">Second example: Showcase</h2>
-<p>This second example follows a more complete example in the <a href="https://github.com/gabime/spdlog">spdlog</a> documention and highlights numerous features of the library. As before, this example is also included in the <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> package as <a href="https://github.com/eddelbuettel/rcppspdlog/blob/master/inst/examples/exampleTwo.cpp">examples/exampleTwo.cpp</a>. And as before, do not use this example as a starting point in an R package.</p>
+<p>This second example follows a more complete example in the <a href="https://github.com/gabime/spdlog">spdlog</a> documention and
+highlights numerous features of the library. As before, this example is
+also included in the <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> package
+as <a href="https://github.com/eddelbuettel/rcppspdlog/blob/master/inst/examples/exampleTwo.cpp">examples/exampleTwo.cpp</a>.
+And as before, do not use this example as a starting point in an R
+package.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/spdlog.h&quot;</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
@@ -479,9 +507,16 @@ color: unset;
 <span id="cb3-250"><a href="#cb3-250" aria-hidden="true" tabindex="-1"></a><span class="co">/*** R</span></span>
 <span id="cb3-251"><a href="#cb3-251" aria-hidden="true" tabindex="-1"></a><span class="co">exampleTwo()</span></span>
 <span id="cb3-252"><a href="#cb3-252" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div>
-<p>We are not showing the output here; it can be compiled, linked, loaded and run just as above by simply passing the filename to <code>Rcpp::sourceCpp()</code>. Note that is will create a few demonstration logfiles so you may want to run the example from a temporary directory.</p>
+<p>We are not showing the output here; it can be compiled, linked,
+loaded and run just as above by simply passing the filename to
+<code>Rcpp::sourceCpp()</code>. Note that is will create a few
+demonstration logfiles so you may want to run the example from a
+temporary directory.</p>
 <h2 id="third-example-colour">Third example: Colour</h2>
-<p>The next example highlights a colour ‘sink’ for the logger. Again, do not use this as a starting point for your package as <code>R CMD check</code> will protest about use of <code>stdout</code>.</p>
+<p>The next example highlights a colour ‘sink’ for the logger. Again, do
+not use this as a starting point for your package as
+<code>R CMD check</code> will protest about use of
+<code>stdout</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/spdlog.h&quot;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/stdout_color_sinks.h&quot;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -517,7 +552,12 @@ color: unset;
 <span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co">/*** R</span></span>
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co">exampleThree()</span></span>
 <span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div>
-<p>When running this example in a terminal capable of displaying colour escape sequence, the logging levels are distinguished by colour. This ranges from green (“info”) to yellow (“warning”) to red (“error”) and white-on-red (“critical”). Not that in this vignette color from standard output does how not show (in the keep-it-simple-mode we are using here).</p>
+<p>When running this example in a terminal capable of displaying colour
+escape sequence, the logging levels are distinguished by colour. This
+ranges from green (“info”) to yellow (“warning”) to red (“error”) and
+white-on-red (“critical”). Not that in this vignette color from standard
+output does how not show (in the keep-it-simple-mode we are using
+here).</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> exampleThree<span class="er">(</span><span class="kw">)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260692]</span> [I] [thread 2502026] This an info message with custom format</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260715]</span> [I] [thread 2502026] Welcome to spdlog!</span>
@@ -528,8 +568,10 @@ color: unset;
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260741]</span> [I] [thread 2502026] Positional args are supported too..</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260743]</span> [I] [thread 2502026] left aligned</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span></span></code></pre></div>
-<h2 id="fourth-example-dedicated-r-logger">Fourth Example: Dedicated R Logger</h2>
-<p>The next example is suitable for use in R packages, and in fact included as an example in the package. We include the source file <a href="https://github.com/eddelbuettel/rcppspdlog/blob/master/src/exampleRsink.cpp">src/exampleRsink.cpp</a>.</p>
+<h2 id="fourth-example-dedicated-r-logger">Fourth Example: Dedicated R
+Logger</h2>
+<p>The next example is suitable for use in R packages, and in fact
+included as an example in the package. We include the source file <a href="https://github.com/eddelbuettel/rcppspdlog/blob/master/src/exampleRsink.cpp">src/exampleRsink.cpp</a>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// this portmanteau include also defines the r_sink we use below, and which</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">// diverts all logging to R via the Rcpp::Rcout replacement for std::cout</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;RcppSpdlog&gt;</span></span>
@@ -585,7 +627,10 @@ color: unset;
 <span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setLogLevel<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op"> &amp;</span>name<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>from_str<span class="op">(</span>name<span class="op">));</span></span>
 <span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>The example file contains three key aspects to highlight: - use of the <code>r_sink_mt()</code> class for R-specific logger sink - use of the very convenient <code>stopwatch</code> object - use of logging levels</p>
+<p>The example file contains three key aspects to highlight: - use of
+the <code>r_sink_mt()</code> class for R-specific logger sink - use of
+the very convenient <code>stopwatch</code> object - use of logging
+levels</p>
 <p>We highlight these below after first showing the relevant output:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> exampleRsink<span class="er">(</span><span class="kw">)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076751]</span> [fromR] [I] [thread 2453030] Welcome to spdlog!</span>
@@ -599,20 +644,38 @@ color: unset;
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076892]</span> [fromR] [I] [thread 2453030] Elapsed time: 0.000167057</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span></span></code></pre></div>
 <h4 id="r-specific-sink">R-specific sink</h4>
-<p><a href="https://github.com/gabime/spdlog">spdlog</a> has the ability to derive and sub-class sinks for logger. The <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> package uses this feature to implement a sink using the Rcpp conduit <code>Rcpp::Rcout</code> instead of <code>std::cout</code> as it conveniently redirects to the R output stream. This class should be the default one for any R packages wanting to use <a href="https://github.com/gabime/spdlog">spdlog</a> while also passing <code>R CMD check</code>.</p>
-<p>A second important aspect of the initial code in function <code>exampleRsink()</code> is how a named logging instance is requested. If none is found, a new one is instantiated. Next, this logger is made the default logger permitting convenient programmatic access via <code>spdlog::</code>.</p>
+<p><a href="https://github.com/gabime/spdlog">spdlog</a> has the ability
+to derive and sub-class sinks for logger. The <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> package
+uses this feature to implement a sink using the Rcpp conduit
+<code>Rcpp::Rcout</code> instead of <code>std::cout</code> as it
+conveniently redirects to the R output stream. This class should be the
+default one for any R packages wanting to use <a href="https://github.com/gabime/spdlog">spdlog</a> while also passing
+<code>R CMD check</code>.</p>
+<p>A second important aspect of the initial code in function
+<code>exampleRsink()</code> is how a named logging instance is
+requested. If none is found, a new one is instantiated. Next, this
+logger is made the default logger permitting convenient programmatic
+access via <code>spdlog::</code>.</p>
 <h4 id="stopwatch">Stopwatch</h4>
-<p>A powerful (recent) feature of the include <a href="https://github.com/fmtlib/fmt">fmt</a> library is the automatic formatting of timestamps and interval. As the code example shows, simply instantianting an object, here called <code>sw</code>, and referring to it later is all that takes.</p>
+<p>A powerful (recent) feature of the include <a href="https://github.com/fmtlib/fmt">fmt</a> library is the automatic
+formatting of timestamps and interval. As the code example shows, simply
+instantianting an object, here called <code>sw</code>, and referring to
+it later is all that takes.</p>
 <h4 id="log-level">Log-Level</h4>
-<p>A second utility function <code>setLogLevel()</code> is also provided. Usage is simple: after calling it with a given level, only message equal to it or higher are shown as the next example shows.</p>
+<p>A second utility function <code>setLogLevel()</code> is also
+provided. Usage is simple: after calling it with a given level, only
+message equal to it or higher are shown as the next example shows.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> setLogLevel<span class="er">(</span><span class="st">&quot;error&quot;</span><span class="kw">)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> exampleRsink<span class="er">(</span><span class="kw">)</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:54:12.666261]</span> [fromR] [E] [thread 2453030] Some error message with arg: 1</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:54:12.666286]</span> [fromR] [C] [thread 2453030] Support for int: 42<span class="kw">;</span>  <span class="ex">hex:</span> 2a<span class="kw">;</span>  <span class="ex">oct:</span> 52<span class="kw">;</span> <span class="ex">bin:</span> 101010</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span></span></code></pre></div>
-<p>By requestion level ‘error’, message of level ‘info’, ‘warning’ or ‘debug’ are suppressed but messages levels ‘error’ or ‘critical’ as shown as desired.</p>
+<p>By requestion level ‘error’, message of level ‘info’, ‘warning’ or
+‘debug’ are suppressed but messages levels ‘error’ or ‘critical’ as
+shown as desired.</p>
 <h2 id="fifth-example-initialization">Fifth Example: Initialization</h2>
-<p>Package desiring to use <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> can initialize its facilities during startup.</p>
+<p>Package desiring to use <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> can
+initialize its facilities during startup.</p>
 <p>For that we first define a setup function</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// this portmanteau include also defines the r_sink we use below, and which</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">// diverts all logging to R via the Rcpp::Rcout replacement for std::cout</span></span>
@@ -632,9 +695,19 @@ color: unset;
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>.onLoad <span class="ot">&lt;-</span> <span class="cf">function</span>(libname, pkgname) {</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setDefault</span>();</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<h2 id="sixth-example-compile-time-selection">Sixth Example: Compile-time Selection</h2>
-<p>Of course, <a href="https://github.com/gabime/spdlog">spdlog</a> also supports a common usage paradigm with loggers in which the decision of whether to log or not is <em>compile-time</em> rather than run time. As this is typically implemented via macros, usage is via upper-case macros as well.</p>
-<p>The following example shows a function with three different logging-level statements as well as a <code>#define</code> set such one and only one is shown. Similarly, code can contain debug or trace or info or … statements which would <em>not</em> appear in the actually loaded “production code” (or CRAN version) if the compile-time logging level define is set high enough.</p>
+<h2 id="sixth-example-compile-time-selection">Sixth Example:
+Compile-time Selection</h2>
+<p>Of course, <a href="https://github.com/gabime/spdlog">spdlog</a> also
+supports a common usage paradigm with loggers in which the decision of
+whether to log or not is <em>compile-time</em> rather than run time. As
+this is typically implemented via macros, usage is via upper-case macros
+as well.</p>
+<p>The following example shows a function with three different
+logging-level statements as well as a <code>#define</code> set such one
+and only one is shown. Similarly, code can contain debug or trace or
+info or … statements which would <em>not</em> appear in the actually
+loaded “production code” (or CRAN version) if the compile-time logging
+level define is set high enough.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// this portmanteau include also defines the r_sink we use below, and which</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">// diverts all logging to R via the Rcpp::Rcout replacement for std::cout</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;RcppSpdlog&gt;</span></span>
@@ -653,15 +726,34 @@ color: unset;
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// debug message via default logger</span></span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    SPDLOG_CRITICAL<span class="op">(</span><span class="st">&quot;Some critical message.. </span><span class="sc">{}</span><span class="st"> ,</span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="fl">3.23</span><span class="op">);</span></span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>When a piece of code with such compile-time defines is used, we see the expected outcome. The following example uses default logger, and as the preceding section showed this can be set up to be the custom R sink:</p>
+<p>When a piece of code with such compile-time defines is used, we see
+the expected outcome. The following example uses default logger, and as
+the preceding section showed this can be set up to be the custom R
+sink:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>R<span class="sc">&gt;</span> Rcpp<span class="sc">::</span><span class="fu">sourceCpp</span>(<span class="st">&quot;/tmp/rcppspdlog.cpp&quot;</span>)  <span class="co"># plus a &#39;// [[Rcpp:depends(&quot;RcppSpdlog&quot;)&#39;</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>R<span class="sc">&gt;</span> <span class="fu">demoInvisible</span>()</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>Hello from demoInvisible, just to show we<span class="st">&#39;re being called...</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">[08:44:48.198075] [fromR] [C] [thread 2453030] Some critical message.. 1 ,3.23</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">R&gt;</span></span></code></pre></div>
-<h2 id="seventh-example-access-from-r">Seventh Example: Access From R</h2>
-<p>As of package 0.0.9, <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> supports two new modes. The first is direct logging support from R and described in this section; the second is access from another R package and described thereafter. A number of basic functions are exported using Rcpp. These include <code>log_setup(name, level)</code> to instantiate a named logger at a given level (instead of an unnamed default at level ‘warn’), <code>log_filesetup(filename, name, level)</code> (same using the named file as logging destination), a helper <code>log_drop(name)</code> to drop a named logger, two setters <code>log_set_pattern()</code> and <code>log_set_level()</code> to set, respectively, the displayed log pattern and the level. This is complemented by the actual loggers ranging from <code>log_trace()</code> and <code>log_debug()</code> to <code>log_info()</code>, <code>log_warn()</code>, <code>log_error()</code> and finally <code>log_critical()</code>.</p>
-<p>The following example (also the example in the manual page) illustrates.</p>
+<h2 id="seventh-example-access-from-r">Seventh Example: Access From
+R</h2>
+<p>As of package 0.0.9, <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a>
+supports two new modes. The first is direct logging support from R and
+described in this section; the second is access from another R package
+and described thereafter. A number of basic functions are exported using
+Rcpp. These include <code>log_setup(name, level)</code> to instantiate a
+named logger at a given level (instead of an unnamed default at level
+‘warn’), <code>log_filesetup(filename, name, level)</code> (same using
+the named file as logging destination), a helper
+<code>log_drop(name)</code> to drop a named logger, two setters
+<code>log_set_pattern()</code> and <code>log_set_level()</code> to set,
+respectively, the displayed log pattern and the level. This is
+complemented by the actual loggers ranging from <code>log_trace()</code>
+and <code>log_debug()</code> to <code>log_info()</code>,
+<code>log_warn()</code>, <code>log_error()</code> and finally
+<code>log_critical()</code>.</p>
+<p>The following example (also the example in the manual page)
+illustrates.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(RcppSpdlog)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">log_setup</span>(<span class="st">&quot;demo&quot;</span>)                     <span class="co"># default level &#39;warn&#39; is used</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">log_info</span>(<span class="st">&quot;this message is NOT seen&quot;</span>)</span>
@@ -672,41 +764,122 @@ color: unset;
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">log_warn</span>(<span class="st">&quot;as is this message&quot;</span>)</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>[ <span class="dv">15</span><span class="sc">:</span><span class="dv">55</span><span class="sc">:</span><span class="fl">37.513</span>] [demo] [warning] as is this message</span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span></span></code></pre></div>
-<p>The interface expects a character value so use from either <code>sprintf()</code> or a string-interpolating helper such as <code>glue::glue</code> can be used:</p>
+<p>The interface expects a character value so use from either
+<code>sprintf()</code> or a string-interpolating helper such as
+<code>glue::glue</code> can be used:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">log_info</span>(<span class="fu">sprintf</span>(<span class="st">&quot;We can %s a %s with values %d&quot;</span>, <span class="st">&quot;build&quot;</span>, <span class="st">&quot;text&quot;</span>, 42L))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span><span class="sc">:</span><span class="dv">03</span><span class="sc">:</span><span class="fl">37.728</span>] [demo] [info] We can build a text with values <span class="dv">42</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">log_info</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;We can {a} a {b} with values {v}&quot;</span>, <span class="at">a=</span><span class="st">&quot;build&quot;</span>, <span class="at">b=</span><span class="st">&quot;text&quot;</span>, <span class="at">v=</span>42L))</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span><span class="sc">:</span><span class="dv">03</span><span class="sc">:</span><span class="fl">46.395</span>] [demo] [info] We can build a text with values <span class="dv">42</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span></span></code></pre></div>
-<h2 id="eight-example-access-from-another-r-package">Eight Example: Access From Another R Package</h2>
-<p>As of package 0.0.9, another package can use the C++ level functions (either with or without the R functions) by importing the <code>RcppSpdlog</code> while ensuring at least one function from the package is imported (so that the C-level interface functions are instantiated by R). This is time-honoured mechanism long-used by <code>lme4</code> to access (compiled) functions from <code>Matrix</code> as well as by <code>xts</code> to access code from <code>zoo</code>, and others.</p>
-<p>To properly import the package, add just one import, for example <code>importFrom((RcppSpdlog, log_setup)</code> to the <code>NAMESPACE</code> file of your package, along with the required <code>Imports: RcppSpdlog</code> in the <code>DESCRIPTION</code> file. The available functions are the same as the ones described in the previous section, but now available at the C++ level in the <code>RcppSpdlog</code> namespace. So for example</p>
+<h2 id="eight-example-access-from-another-r-package">Eight Example:
+Access From Another R Package</h2>
+<p>As of package 0.0.9, another package can use the C++ level functions
+(either with or without the R functions) by importing the
+<code>RcppSpdlog</code> while ensuring at least one function from the
+package is imported (so that the C-level interface functions are
+instantiated by R). This is time-honoured mechanism long-used by
+<code>lme4</code> to access (compiled) functions from
+<code>Matrix</code> as well as by <code>xts</code> to access code from
+<code>zoo</code>, and others.</p>
+<p>To properly import the package, add just one import, for example
+<code>importFrom((RcppSpdlog, log_setup)</code> to the
+<code>NAMESPACE</code> file of your package, along with the required
+<code>Imports: RcppSpdlog</code> in the <code>DESCRIPTION</code> file.
+The available functions are the same as the ones described in the
+previous section, but now available at the C++ level in the
+<code>RcppSpdlog</code> namespace. So for example</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;RcppSpdlog.h&gt;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>RcppSpdlog<span class="op">::</span>log_setup<span class="op">(</span><span class="st">&quot;demoLogger&quot;</span><span class="op">,</span> <span class="st">&quot;info&quot;</span><span class="op">);</span>    <span class="co">// create logger at info level</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>RcppSpdlog<span class="op">::</span>log_info<span class="op">(</span><span class="st">&quot;logger created&quot;</span><span class="op">);</span></span></code></pre></div>
 <p>will work.</p>
-<h2 id="nineth-example-more-compact-c-access">Nineth Example: More compact C++ Access</h2>
-<p>As the (auto-generated, thanks to <code>Rcpp</code>) interface described in the previous section is a little “wordy”, we added a simple aliasing wrapping in a new namespace <code>spdl</code> and, given the protection from naming collisions offered by the namespace, shortened the accessor function names. So the previous example can also be used via</p>
+<h2 id="nineth-example-more-compact-c-access">Nineth Example: More
+compact C++ Access</h2>
+<p>As the (auto-generated, thanks to <code>Rcpp</code>) interface
+described in the previous section is a little “wordy”, we added a simple
+aliasing wrapping in a new namespace <code>spdl</code> and, given the
+protection from naming collisions offered by the namespace, shortened
+the accessor function names. So the previous example can also be used
+via</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;spdl.h&gt;</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>spdl<span class="op">::</span>setup<span class="op">(</span><span class="st">&quot;demoLogger&quot;</span><span class="op">,</span> <span class="st">&quot;info&quot;</span><span class="op">);</span>  <span class="co">// create logger at info level</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>spdl<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;logger created&quot;</span><span class="op">);</span></span></code></pre></div>
-<p>The logger interface takes a simple string. Two easy options exist for formatting such as string. First, one can rely on the <a href="https://github.com/c42f/tinyformat">tinyformat</a> version included with <code>Rcpp</code> and use <code>tfm::format()</code> which works with standard <code>printf()</code> operators. Second, one can use the <code>fmt</code> library included with <code>spdlog</code> via an explicit call.</p>
+<p>The logger interface takes a simple string. Two easy options exist
+for formatting such as string. First, one can rely on the <a href="https://github.com/c42f/tinyformat">tinyformat</a> version
+included with <code>Rcpp</code> and use <code>tfm::format()</code> which
+works with standard <code>printf()</code> operators. Second, one can use
+the <code>fmt</code> library included with <code>spdlog</code> via an
+explicit call.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp"># </span><span class="er">using tfm::format</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>spdl<span class="op">::</span>info<span class="op">(</span>tfm<span class="op">::</span>format<span class="op">(</span><span class="st">&quot;We </span><span class="sc">%s</span><span class="st"> values </span><span class="sc">%d</span><span class="st"> and </span><span class="sc">%f</span><span class="st">&quot;</span><span class="op">,</span> <span class="st">&quot;log&quot;</span><span class="op">,</span> <span class="dv">42</span><span class="op">,</span> <span class="fl">1.23</span><span class="op">));</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="pp"># </span><span class="er">using fmt::format</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>spdl<span class="op">::</span>info<span class="op">(</span>fmt<span class="op">::</span>format<span class="op">(</span><span class="st">&quot;We </span><span class="sc">{}</span><span class="st"> values </span><span class="sc">{}</span><span class="st"> and </span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="st">&quot;log&quot;</span><span class="op">,</span> <span class="dv">42</span><span class="op">,</span> <span class="fl">1.23</span><span class="op">));</span></span></code></pre></div>
-<p>Here both formatters have to be called explicitly as we use a simple one-function signature (per logging function) to the underlying C language implementation without the fuller flexibility of variadic arguments.</p>
-<p>As C++11 can be assumed, we can also offers a variadic template expansion for <code>fmt::format()</code> and the second example simply becomes</p>
+<p>Here both formatters have to be called explicitly as we use a simple
+one-function signature (per logging function) to the underlying C
+language implementation without the fuller flexibility of variadic
+arguments.</p>
+<p>As C++11 can be assumed, we can also offers a variadic template
+expansion for <code>fmt::format()</code> and the second example simply
+becomes</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>spdl<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;We </span><span class="sc">{}</span><span class="st"> values </span><span class="sc">{}</span><span class="st"> and </span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="st">&quot;log&quot;</span><span class="op">,</span> <span class="dv">42</span><span class="op">,</span> <span class="fl">1.23</span><span class="op">);</span></span></code></pre></div>
-<h2 id="tenth-example-more-compact-r-access">Tenth Example: More compact R Access</h2>
-<p>As the more compact access in the previous section is quite compelling we also created a sibbling R package <a href="https://github.com/eddelbuettel/spdl">spd</a> providing a <code>spdl</code> namespace in R allowing _the exact same format strings too`.</p>
+<h2 id="tenth-example-more-compact-r-access">Tenth Example: More compact
+R Access</h2>
+<p>As the more compact access in the previous section is quite
+compelling we also created a sibbling R package <a href="https://github.com/eddelbuettel/spdl">spd</a> providing a
+<code>spdl</code> namespace in R allowing _the exact same format strings
+too`.</p>
 <p>So</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>spdl<span class="sc">::</span><span class="fu">info</span>(<span class="st">&quot;We {} values {} and {}&quot;</span>, <span class="st">&quot;log&quot;</span>, 42L, <span class="fl">1.23</span>);</span></code></pre></div>
-<p>now also works from R using the same formatting string. We inted to upload <code>spdl</code> to CRAN too.</p>
-<p>Note that other all other formatting options are supported from R: the first argument is a character variable which can be constructed using <code>paste</code>, <code>sprintf</code>, or any of the string-interpolating packages. But as none of those methods works like <a href="https://github.com/fmtlib/fmt">fmt</a> (which we have come to like a lot) we added support for it too.</p>
+<p>now also works from R using the same formatting string. We inted to
+upload <code>spdl</code> to CRAN too.</p>
+<p>Note that other all other formatting options are supported from R:
+the first argument is a character variable which can be constructed
+using <code>paste</code>, <code>sprintf</code>, or any of the
+string-interpolating packages. But as none of those methods works like
+<a href="https://github.com/fmtlib/fmt">fmt</a> (which we have come to
+like a lot) we added support for it too.</p>
+<h2 id="eleventh-example-stopwatch-support-in-r-and-c">Eleventh Example:
+Stopwatch Support in R and C++</h2>
+<p>As shown above, <a href="https://github.com/gabime/spdlog">spdlog</a>
+supports a ‘stopwatch’ in C++. Usage is straightforward: one first
+instantiates an object of type <code>stopwatch</code> (make sure to
+first include the appropriate header too!) and then reports elapsed time
+by including the <code>stopwatch</code> object in the logger.</p>
+<p>We wrap this <code>spdlog::stopwatch</code> object in an external
+pointer to make it accessible from R. Moreover, by creating it as a S3
+object we can add a <code>format()</code> method to make the usage
+pattern identical to the use in C++. So in R we now have</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sw <span class="ot">&lt;-</span> RcppSpdlog<span class="sc">::</span><span class="fu">get_stopwatch</span>()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.sleep</span>(<span class="fl">0.2</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>RcppSpdlog<span class="sc">::</span><span class="fu">log_warn</span>(<span class="st">&quot;Elapsed time via stopwatch: {}&quot;</span>, sw)</span></code></pre></div>
+<p>This also works in C++.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">auto</span> sw <span class="op">=</span> RcppSpdlog<span class="op">::</span>get_stopwatch<span class="op">();</span>  <span class="co">// returns XPtr&lt;spdlog::stopwatch</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>usleep<span class="op">(</span><span class="dv">200</span><span class="op">);</span>                            <span class="co">// from unistd.h</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>RcppSpdlog<span class="op">::</span>log_warn<span class="op">(</span><span class="st">&quot;Elapsed&quot;</span><span class="op">,</span> RcppSpdlog<span class="op">::</span>format_stopwatch<span class="op">(</span>sw<span class="op">));</span></span></code></pre></div>
+<p>Note that in that last line we need to <em>explicitly</em> call a
+formatter as we do not get the templated formatter from <a href="https://github.com/gabime/spdlog">spdlog</a> as our object is an
+external-pointer wrapped object.</p>
+<p>We also export this via the <code>spdl.h</code> wrapper. So the same
+C++ functionality is also available as</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">auto</span> sw <span class="op">=</span> spdl<span class="op">::</span>stopwatch<span class="op">();</span>  <span class="co">// returns XPtr&lt;spdlog::stopwatch</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>usleep<span class="op">(</span><span class="dv">200</span><span class="op">);</span>                  <span class="co">// from unistd.h</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>spdl<span class="op">::</span>warn<span class="op">(</span><span class="st">&quot;Elapsed&quot;</span><span class="op">,</span> spdl<span class="op">::</span>format<span class="op">(</span>sw<span class="op">));</span></span></code></pre></div>
+<p>And because the <a href="https://cran.r-project.org/package=spdl">spdl</a> package wraps
+this for R, we can do the same in R:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sw <span class="ot">&lt;-</span> spdl<span class="sc">::</span><span class="fu">stopwatch</span>()</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.sleep</span>(<span class="fl">0.2</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>spdl<span class="sc">::</span><span class="fu">warn</span>(<span class="st">&quot;Elapsed: {}&quot;</span>, sw)</span></code></pre></div>
+<p>which once again takes advantage of the S3 class and its
+<code>format()</code> method.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p><a href="https://github.com/gabime/spdlog">spdlog</a> and the included <a href="https://github.com/fmtlib/fmt">fmt</a> are two very powerful and widely used C++ libraries. The <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> package adds to them to the set of packages R users can deploy. The <a href="https://github.com/eddelbuettel/spdl">spd</a> package makes access even easier and more consistent. It is our hope that the examples shown here are of interest to R users who are looking for effortless, performant and flexible logging solutions for their R packages.</p>
+<p><a href="https://github.com/gabime/spdlog">spdlog</a> and the
+included <a href="https://github.com/fmtlib/fmt">fmt</a> are two very
+powerful and widely used C++ libraries. The <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSpdlog</a> package
+adds to them to the set of packages R users can deploy. The <a href="https://github.com/eddelbuettel/spdl">spd</a> package makes access
+even easier and more consistent. It is our hope that the examples shown
+here are of interest to R users who are looking for effortless,
+performant and flexible logging solutions for their R packages.</p>
 </body>
 </html>
