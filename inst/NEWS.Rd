@@ -3,6 +3,18 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppspdlog/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppspdlog/issues/#1}{##1}}
 
+\section{Changes in RcppSpdlog version 0.0.13 (2023-06-17)}{
+  \itemize{
+    \item Minor tweak to \code{stopwatch} setup avoids pulling in \pkg{fmt}
+    \item No longer set a C++ compilation standard as the default choices by
+    R are sufficient for the package
+    \item Add convenience wrapper \code{log_init} omitting first argument to
+    \code{log_setup} while preserving the interface from the latter
+    \item Add convenience \code{setup} wrappers \code{init} and \code{log} to
+    API header file \code{spdl.h}
+  }
+}
+
 \section{Changes in RcppSpdlog version 0.0.12 (2023-01-07)}{
   \itemize{
     \item Addeed support for 'stopwatch' object allowing for simple timing

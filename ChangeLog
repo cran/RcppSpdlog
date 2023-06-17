@@ -1,3 +1,29 @@
+2023-06-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Version 0.0.13
+
+2023-06-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro release version
+
+	* src/interface.cpp (log_init): Add a simple convenience wrapper to
+	log_setup() which omits the first 'logger name' argument
+
+	* inst/include/spdl.h: Define convenience wrappers init() and log()
+
+2023-03-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro release version
+
+	* src/Makevars: No longer set a C++ standard
+
+	* R/RcppExports.R (setLoadAction): Updated .Call using backticks
+
+2023-01-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/spdlog_stopwatch.h: Define stopwatch without fmt.h header
+	* inst/include/RcppSpdlog_types.h: Use spdlog_stopwatch if #define set
+
 2023-01-07  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Version 0.0.12
