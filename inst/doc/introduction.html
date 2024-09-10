@@ -7,77 +7,85 @@
   <meta name="author" content="Dirk Eddelbuettel" />
   <title>Introduction to RcppSpdlog</title>
   <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      {   }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-    code span.at { color: #7d9029; } /* Attribute */
-    code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { color: #008000; } /* BuiltIn */
-    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #4070a0; } /* Char */
-    code span.cn { color: #880000; } /* Constant */
-    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-    code span.dt { color: #902000; } /* DataType */
-    code span.dv { color: #40a070; } /* DecVal */
-    code span.er { color: #ff0000; font-weight: bold; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #40a070; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { color: #008000; font-weight: bold; } /* Import */
-    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-    code span.op { color: #666666; } /* Operator */
-    code span.ot { color: #007020; } /* Other */
-    code span.pp { color: #bc7a00; } /* Preprocessor */
-    code span.sc { color: #4070a0; } /* SpecialChar */
-    code span.ss { color: #bb6688; } /* SpecialString */
-    code span.st { color: #4070a0; } /* String */
-    code span.va { color: #19177c; } /* Variable */
-    code span.vs { color: #4070a0; } /* VerbatimString */
-    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
-  </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
   <style type="text/css">
 body {
 max-width: 50rem;
@@ -233,14 +241,14 @@ package.</p>
 final block ensures that the created function <code>exampleOne()</code>
 is executed. In one previous run, the following output was produded:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> exampleOne<span class="er">(</span><span class="kw">)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362024]</span> [I] [thread 2453030] Welcome to spdlog!</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362047]</span> [E] [thread 2453030] Some error message with arg: 1</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362051]</span> [W] [thread 2453030] Easy padding in numbers like 00000012</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362053]</span> [C] [thread 2453030] Support for int: 42<span class="kw">;</span>  <span class="ex">hex:</span> 2a<span class="kw">;</span>  <span class="ex">oct:</span> 52<span class="kw">;</span> <span class="ex">bin:</span> 101010</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362056]</span> [I] [thread 2453030] Support for floats 1.23</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362058]</span> [I] [thread 2453030] Positional args are supported too..</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362060]</span> [I] [thread 2453030] left aligned</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362061]</span> [D] [thread 2453030] This message should be displayed..</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362024]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2453030] Welcome to spdlog!</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362047]</span> <span class="pp">[</span><span class="ss">E</span><span class="pp">]</span> [thread 2453030] Some error message with arg: 1</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362051]</span> <span class="pp">[</span><span class="ss">W</span><span class="pp">]</span> [thread 2453030] Easy padding in numbers like 00000012</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362053]</span> <span class="pp">[</span><span class="ss">C</span><span class="pp">]</span> [thread 2453030] Support for int: 42<span class="kw">;</span>  <span class="ex">hex:</span> 2a<span class="kw">;</span>  <span class="ex">oct:</span> 52<span class="kw">;</span> <span class="ex">bin:</span> 101010</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362056]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2453030] Support for floats 1.23</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362058]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2453030] Positional args are supported too..</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362060]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2453030] left aligned</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:25:03.362061]</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span> [thread 2453030] This message should be displayed..</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span></span></code></pre></div>
 <p>We note the easy-to-formatting in the source which benefits from the
 embedded <a href="https://github.com/fmtlib/fmt">fmt</a> package for
@@ -255,258 +263,259 @@ also included in the <a href="https://github.com/eddelbuettel/rcppspdlog">RcppSp
 as <a href="https://github.com/eddelbuettel/rcppspdlog/blob/master/inst/examples/exampleTwo.cpp">examples/exampleTwo.cpp</a>.
 And as before, do not use this example as a starting point in an R
 package.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/spdlog.h&quot;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> stdout_logger_example<span class="op">();</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> basic_example<span class="op">();</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> rotating_example<span class="op">();</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> daily_example<span class="op">();</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> async_example<span class="op">();</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> binary_example<span class="op">();</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> trace_example<span class="op">();</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> multi_sink_example<span class="op">();</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> user_defined_example<span class="op">();</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> err_handler_example<span class="op">();</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> syslog_example<span class="op">();</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> clone_example<span class="op">();</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/spdlog.h&quot;</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::depends(RcppSpdlog)]]</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> exampleTwo<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Welcome to spdlog version </span><span class="sc">{}</span><span class="st">.</span><span class="sc">{}</span><span class="st">.</span><span class="sc">{}</span><span class="st"> !&quot;</span><span class="op">,</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                 SPDLOG_VER_MAJOR<span class="op">,</span> SPDLOG_VER_MINOR<span class="op">,</span> SPDLOG_VER_PATCH<span class="op">);</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>warn<span class="op">(</span><span class="st">&quot;Easy padding in numbers like </span><span class="sc">{:08d}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">12</span><span class="op">);</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>critical<span class="op">(</span><span class="st">&quot;Support for int: </span><span class="sc">{0:d}</span><span class="st">;  hex: </span><span class="sc">{0:x}</span><span class="st">;  oct: </span><span class="sc">{0:o}</span><span class="st">; bin: </span><span class="sc">{0:b}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">42</span><span class="op">);</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Support for floats </span><span class="sc">{:03.2f}</span><span class="st">&quot;</span><span class="op">,</span> <span class="fl">1.23456</span><span class="op">);</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Positional args are </span><span class="sc">{1}</span><span class="st"> </span><span class="sc">{0}</span><span class="st">..&quot;</span><span class="op">,</span> <span class="st">&quot;too&quot;</span><span class="op">,</span> <span class="st">&quot;supported&quot;</span><span class="op">);</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;</span><span class="sc">{:&gt;8}</span><span class="st"> aligned, </span><span class="sc">{:&lt;8}</span><span class="st"> aligned&quot;</span><span class="op">,</span> <span class="st">&quot;right&quot;</span><span class="op">,</span> <span class="st">&quot;left&quot;</span><span class="op">);</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Runtime log levels</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>info<span class="op">);</span> <span class="co">// Set global log level to info</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>debug<span class="op">(</span><span class="st">&quot;This message should not be displayed!&quot;</span><span class="op">);</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>trace<span class="op">);</span> <span class="co">// Set specific logger&#39;s log level</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>debug<span class="op">(</span><span class="st">&quot;This message should be displayed..&quot;</span><span class="op">);</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Customize msg format for all loggers</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_pattern<span class="op">(</span><span class="st">&quot;[%H:%M:%S %z] [%^%L%$] [thread %t] %v&quot;</span><span class="op">);</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;This an info message with custom format&quot;</span><span class="op">);</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_pattern<span class="op">(</span><span class="st">&quot;%+&quot;</span><span class="op">);</span> <span class="co">// back to default format</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        stdout_logger_example<span class="op">();</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        basic_example<span class="op">();</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        rotating_example<span class="op">();</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        daily_example<span class="op">();</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>        clone_example<span class="op">();</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>        async_example<span class="op">();</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>        binary_example<span class="op">();</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        multi_sink_example<span class="op">();</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>        user_defined_example<span class="op">();</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>        err_handler_example<span class="op">();</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>        trace_example<span class="op">();</span></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Flush all *registered* loggers using a worker thread every 3 seconds.</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>        <span class="co">// note: registered loggers *must* be thread safe for this to work correctly!</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>        spdlog<span class="op">::</span>flush_every<span class="op">(</span><span class="bu">std::</span>chrono<span class="bu">::</span>seconds<span class="op">(</span><span class="dv">3</span><span class="op">));</span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Apply some function on all registered loggers</span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>        spdlog<span class="op">::</span>apply_all<span class="op">([&amp;](</span><span class="bu">std::</span>shared_ptr<span class="op">&lt;</span>spdlog<span class="op">::</span>logger<span class="op">&gt;</span> l<span class="op">)</span> <span class="op">{</span> l<span class="op">-&gt;</span>info<span class="op">(</span><span class="st">&quot;End of example.&quot;</span><span class="op">);</span> <span class="op">});</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Release all spdlog resources, and drop all loggers in the registry.</span></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>        <span class="co">// This is optional (only mandatory if using windows + async log).</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>        <span class="co">//spdlog::shutdown();</span></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Exceptions will only be thrown upon failed logger or sink construction (not during logging).</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> spdlog<span class="op">::</span>spdlog_ex <span class="op">&amp;</span>ex<span class="op">)</span></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>printf<span class="op">(</span><span class="st">&quot;Log initialization failed: </span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> ex<span class="op">.</span>what<span class="op">());</span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span><span class="op">;</span></span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    <span class="co">// added to this example file allow multiple runs of function</span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;console&quot;</span><span class="op">);</span></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;file_logger&quot;</span><span class="op">);</span></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;some_logger_name&quot;</span><span class="op">);</span></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;daily_logger&quot;</span><span class="op">);</span></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;async_file_logger&quot;</span><span class="op">);</span></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/spdlog.h&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> stdout_logger_example<span class="op">();</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> basic_example<span class="op">();</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> rotating_example<span class="op">();</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> daily_example<span class="op">();</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> async_example<span class="op">();</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> binary_example<span class="op">();</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> trace_example<span class="op">();</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> multi_sink_example<span class="op">();</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> user_defined_example<span class="op">();</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> err_handler_example<span class="op">();</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> syslog_example<span class="op">();</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> clone_example<span class="op">();</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/spdlog.h&quot;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::depends(RcppSpdlog)]]</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> exampleTwo<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Welcome to spdlog version </span><span class="sc">{}</span><span class="st">.</span><span class="sc">{}</span><span class="st">.</span><span class="sc">{}</span><span class="st"> !&quot;</span><span class="op">,</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                 SPDLOG_VER_MAJOR<span class="op">,</span> SPDLOG_VER_MINOR<span class="op">,</span> SPDLOG_VER_PATCH<span class="op">);</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>warn<span class="op">(</span><span class="st">&quot;Easy padding in numbers like </span><span class="sc">{:08d}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">12</span><span class="op">);</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>critical<span class="op">(</span><span class="st">&quot;Support for int: </span><span class="sc">{0:d}</span><span class="st">;  hex: </span><span class="sc">{0:x}</span><span class="st">;  oct: </span><span class="sc">{0:o}</span><span class="st">; bin: </span><span class="sc">{0:b}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">42</span><span class="op">);</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Support for floats </span><span class="sc">{:03.2f}</span><span class="st">&quot;</span><span class="op">,</span> <span class="fl">1.23456</span><span class="op">);</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Positional args are </span><span class="sc">{1}</span><span class="st"> </span><span class="sc">{0}</span><span class="st">..&quot;</span><span class="op">,</span> <span class="st">&quot;too&quot;</span><span class="op">,</span> <span class="st">&quot;supported&quot;</span><span class="op">);</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;</span><span class="sc">{:&gt;8}</span><span class="st"> aligned, </span><span class="sc">{:&lt;8}</span><span class="st"> aligned&quot;</span><span class="op">,</span> <span class="st">&quot;right&quot;</span><span class="op">,</span> <span class="st">&quot;left&quot;</span><span class="op">);</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Runtime log levels</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>info<span class="op">);</span> <span class="co">// Set global log level to info</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>debug<span class="op">(</span><span class="st">&quot;This message should not be displayed!&quot;</span><span class="op">);</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>trace<span class="op">);</span> <span class="co">// Set specific logger&#39;s log level</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>debug<span class="op">(</span><span class="st">&quot;This message should be displayed..&quot;</span><span class="op">);</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Customize msg format for all loggers</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_pattern<span class="op">(</span><span class="st">&quot;[%H:%M:%S %z] [%^%L%$] [thread %t] %v&quot;</span><span class="op">);</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;This an info message with custom format&quot;</span><span class="op">);</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_pattern<span class="op">(</span><span class="st">&quot;%+&quot;</span><span class="op">);</span> <span class="co">// back to default format</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        stdout_logger_example<span class="op">();</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        basic_example<span class="op">();</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        rotating_example<span class="op">();</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>        daily_example<span class="op">();</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>        clone_example<span class="op">();</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>        async_example<span class="op">();</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        binary_example<span class="op">();</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>        multi_sink_example<span class="op">();</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>        user_defined_example<span class="op">();</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>        err_handler_example<span class="op">();</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>        trace_example<span class="op">();</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Flush all *registered* loggers using a worker thread every 3 seconds.</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>        <span class="co">// note: registered loggers *must* be thread safe for this to work correctly!</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>        spdlog<span class="op">::</span>flush_every<span class="op">(</span><span class="bu">std::</span>chrono::seconds<span class="op">(</span><span class="dv">3</span><span class="op">));</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Apply some function on all registered loggers</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>        spdlog<span class="op">::</span>apply_all<span class="op">([&amp;](</span><span class="bu">std::</span>shared_ptr<span class="op">&lt;</span>spdlog<span class="op">::</span>logger<span class="op">&gt;</span> l<span class="op">)</span> <span class="op">{</span> l<span class="op">-&gt;</span>info<span class="op">(</span><span class="st">&quot;End of example.&quot;</span><span class="op">);</span> <span class="op">});</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Release all spdlog resources, and drop all loggers in the registry.</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>        <span class="co">// This is optional (only mandatory if using windows + async log).</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>        <span class="co">//spdlog::shutdown();</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Exceptions will only be thrown upon failed logger or sink construction (not during logging).</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> spdlog<span class="op">::</span>spdlog_ex <span class="op">&amp;</span>ex<span class="op">)</span></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>printf<span class="op">(</span><span class="st">&quot;Log initialization failed: </span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> ex<span class="op">.</span>what<span class="op">());</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>    <span class="co">// added to this example file allow multiple runs of function</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;console&quot;</span><span class="op">);</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;file_logger&quot;</span><span class="op">);</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;some_logger_name&quot;</span><span class="op">);</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;daily_logger&quot;</span><span class="op">);</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;async_file_logger&quot;</span><span class="op">);</span></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/stdout_color_sinks.h&quot;</span></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="co">// or #include &quot;spdlog/sinks/stdout_sinks.h&quot; if no colors needed.</span></span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> stdout_logger_example<span class="op">()</span></span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create color multi threaded logger.</span></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> console <span class="op">=</span> spdlog<span class="op">::</span>stdout_color_mt<span class="op">(</span><span class="st">&quot;console&quot;</span><span class="op">);</span></span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>    <span class="co">// or for stderr:</span></span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    <span class="co">// auto console = spdlog::stderr_color_mt(&quot;error-logger&quot;);</span></span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/basic_file_sink.h&quot;</span></span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> basic_example<span class="op">()</span></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create basic file logger (not rotated).</span></span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> my_logger <span class="op">=</span> spdlog<span class="op">::</span>basic_logger_mt<span class="op">(</span><span class="st">&quot;file_logger&quot;</span><span class="op">,</span> <span class="st">&quot;logs/basic-log.txt&quot;</span><span class="op">);</span></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/rotating_file_sink.h&quot;</span></span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> rotating_example<span class="op">()</span></span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create a file rotating logger with 5mb size max and 3 rotated files.</span></span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> rotating_logger <span class="op">=</span></span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>        spdlog<span class="op">::</span>rotating_logger_mt<span class="op">(</span><span class="st">&quot;some_logger_name&quot;</span><span class="op">,</span> <span class="st">&quot;logs/rotating.txt&quot;</span><span class="op">,</span> <span class="dv">1048576</span> <span class="op">*</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">);</span></span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/daily_file_sink.h&quot;</span></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> daily_example<span class="op">()</span></span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create a daily logger - a new file is created every day on 2:30am.</span></span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> daily_logger <span class="op">=</span> spdlog<span class="op">::</span>daily_logger_mt<span class="op">(</span><span class="st">&quot;daily_logger&quot;</span><span class="op">,</span> <span class="st">&quot;logs/daily.txt&quot;</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">30</span><span class="op">);</span></span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a><span class="co">// Clone a logger and give it new name.</span></span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="co">// Useful for creating component/subsystem loggers from some &quot;root&quot; logger.</span></span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> clone_example<span class="op">()</span></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> network_logger <span class="op">=</span> spdlog<span class="op">::</span>default_logger<span class="op">()-&gt;</span>clone<span class="op">(</span><span class="st">&quot;network&quot;</span><span class="op">);</span></span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>    network_logger<span class="op">-&gt;</span>info<span class="op">(</span><span class="st">&quot;Logging network stuff..&quot;</span><span class="op">);</span></span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/async.h&quot;</span></span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> async_example<span class="op">()</span></span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Default thread pool settings can be modified *before* creating the async logger:</span></span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>    <span class="co">// spdlog::init_thread_pool(32768, 1); // queue with max 32k items 1 backing thread.</span></span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> async_file <span class="op">=</span></span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>        spdlog<span class="op">::</span>basic_logger_mt<span class="op">&lt;</span>spdlog<span class="op">::</span>async_factory<span class="op">&gt;(</span><span class="st">&quot;async_file_logger&quot;</span><span class="op">,</span> <span class="st">&quot;logs/async_log.txt&quot;</span><span class="op">);</span></span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>    <span class="co">// alternatively:</span></span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>    <span class="co">// auto async_file =</span></span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>    <span class="co">//     spdlog::create_async&lt;spdlog::sinks::basic_file_sink_mt&gt;(&quot;async_file_logger&quot;,</span></span>
-<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>    <span class="co">//     &quot;logs/async_log.txt&quot;);</span></span>
-<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">101</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
-<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
-<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>        async_file<span class="op">-&gt;</span>info<span class="op">(</span><span class="st">&quot;Async message #</span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> i<span class="op">);</span></span>
-<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a><span class="co">// Log binary data as hex.</span></span>
-<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a><span class="co">// Many types of std::container&lt;char&gt; types can be used.</span></span>
-<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a><span class="co">// Iterator ranges are supported too.</span></span>
-<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a><span class="co">// Format flags:</span></span>
-<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a><span class="co">// {:X} - print in uppercase.</span></span>
-<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a><span class="co">// {:s} - don&#39;t separate each byte with space.</span></span>
-<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a><span class="co">// {:p} - don&#39;t print the position on each line start.</span></span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="co">// {:n} - don&#39;t split the output to lines.</span></span>
-<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/fmt/bin_to_hex.h&quot;</span></span>
-<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> binary_example<span class="op">()</span></span>
-<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">char</span><span class="op">&gt;</span> buf<span class="op">;</span></span>
-<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">80</span><span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
-<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a>        buf<span class="op">.</span>push_back<span class="op">(</span><span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">char</span><span class="op">&gt;(</span>i <span class="op">&amp;</span> <span class="bn">0xff</span><span class="op">));</span></span>
-<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Binary example: </span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> spdlog<span class="op">::</span>to_hex<span class="op">(</span>buf<span class="op">));</span></span>
-<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Another binary example:{:n}&quot;</span><span class="op">,</span></span>
-<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a>                 spdlog<span class="op">::</span>to_hex<span class="op">(</span><span class="bu">std::</span>begin<span class="op">(</span>buf<span class="op">),</span> <span class="bu">std::</span>begin<span class="op">(</span>buf<span class="op">)</span> <span class="op">+</span> <span class="dv">10</span><span class="op">));</span></span>
-<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>    <span class="co">// more examples:</span></span>
-<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>    <span class="co">// logger-&gt;info(&quot;uppercase: {:X}&quot;, spdlog::to_hex(buf));</span></span>
-<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>    <span class="co">// logger-&gt;info(&quot;uppercase, no delimiters: {:Xs}&quot;, spdlog::to_hex(buf));</span></span>
-<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>    <span class="co">// logger-&gt;info(&quot;uppercase, no delimiters, no position info: {:Xsp}&quot;, spdlog::to_hex(buf));</span></span>
-<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a><span class="co">// Compile time log levels.</span></span>
-<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a><span class="co">// define SPDLOG_ACTIVE_LEVEL to required level (e.g. SPDLOG_LEVEL_TRACE)</span></span>
-<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> trace_example<span class="op">()</span></span>
-<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a>    <span class="co">// trace from default logger</span></span>
-<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>    SPDLOG_TRACE<span class="op">(</span><span class="st">&quot;Some trace message.. </span><span class="sc">{}</span><span class="st"> ,</span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="fl">3.23</span><span class="op">);</span></span>
-<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a>    <span class="co">// debug from default logger</span></span>
-<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a>    SPDLOG_DEBUG<span class="op">(</span><span class="st">&quot;Some debug message.. </span><span class="sc">{}</span><span class="st"> ,</span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="fl">3.23</span><span class="op">);</span></span>
-<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a>    <span class="co">// trace from logger object</span></span>
-<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> logger <span class="op">=</span> spdlog<span class="op">::</span>get<span class="op">(</span><span class="st">&quot;file_logger&quot;</span><span class="op">);</span></span>
-<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a>    SPDLOG_LOGGER_TRACE<span class="op">(</span>logger<span class="op">,</span> <span class="st">&quot;another trace message&quot;</span><span class="op">);</span></span>
-<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a><span class="co">// A logger with multiple sinks (stdout and file) - each with a different format and log level.</span></span>
-<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> multi_sink_example<span class="op">()</span></span>
-<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> console_sink <span class="op">=</span> <span class="bu">std::</span>make_shared<span class="op">&lt;</span>spdlog<span class="op">::</span>sinks<span class="op">::</span>stdout_color_sink_mt<span class="op">&gt;();</span></span>
-<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a>    console_sink<span class="op">-&gt;</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>warn<span class="op">);</span></span>
-<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>    console_sink<span class="op">-&gt;</span>set_pattern<span class="op">(</span><span class="st">&quot;[multi_sink_example] [%^%l%$] %v&quot;</span><span class="op">);</span></span>
-<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> file_sink <span class="op">=</span></span>
-<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>make_shared<span class="op">&lt;</span>spdlog<span class="op">::</span>sinks<span class="op">::</span>basic_file_sink_mt<span class="op">&gt;(</span><span class="st">&quot;logs/multisink.txt&quot;</span><span class="op">,</span> <span class="kw">true</span><span class="op">);</span></span>
-<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a>    file_sink<span class="op">-&gt;</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>trace<span class="op">);</span></span>
-<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-195"><a href="#cb3-195" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>logger logger<span class="op">(</span><span class="st">&quot;multi_sink&quot;</span><span class="op">,</span> <span class="op">{</span>console_sink<span class="op">,</span> file_sink<span class="op">});</span></span>
-<span id="cb3-196"><a href="#cb3-196" aria-hidden="true" tabindex="-1"></a>    logger<span class="op">.</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>debug<span class="op">);</span></span>
-<span id="cb3-197"><a href="#cb3-197" aria-hidden="true" tabindex="-1"></a>    logger<span class="op">.</span>warn<span class="op">(</span><span class="st">&quot;this should appear in both console and file&quot;</span><span class="op">);</span></span>
-<span id="cb3-198"><a href="#cb3-198" aria-hidden="true" tabindex="-1"></a>    logger<span class="op">.</span>info<span class="op">(</span><span class="st">&quot;this message should not appear in the console, only in the file&quot;</span><span class="op">);</span></span>
-<span id="cb3-199"><a href="#cb3-199" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-201"><a href="#cb3-201" aria-hidden="true" tabindex="-1"></a><span class="co">// User defined types logging by implementing operator&lt;&lt;</span></span>
-<span id="cb3-202"><a href="#cb3-202" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/fmt/ostr.h&quot;</span><span class="pp"> </span><span class="co">// must be included</span></span>
-<span id="cb3-203"><a href="#cb3-203" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> <span class="dt">my_type</span></span>
-<span id="cb3-204"><a href="#cb3-204" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-205"><a href="#cb3-205" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i<span class="op">;</span></span>
-<span id="cb3-206"><a href="#cb3-206" aria-hidden="true" tabindex="-1"></a>    <span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> OStream<span class="op">&gt;</span></span>
-<span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a>    <span class="kw">friend</span> OStream <span class="op">&amp;</span><span class="kw">operator</span><span class="op">&lt;&lt;(</span>OStream <span class="op">&amp;</span>os<span class="op">,</span> <span class="at">const</span> <span class="dt">my_type</span> <span class="op">&amp;</span>c<span class="op">)</span></span>
-<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
-<span id="cb3-209"><a href="#cb3-209" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> os <span class="op">&lt;&lt;</span> <span class="st">&quot;[my_type i=&quot;</span> <span class="op">&lt;&lt;</span> c<span class="op">.</span>i <span class="op">&lt;&lt;</span> <span class="st">&quot;]&quot;</span><span class="op">;</span></span>
-<span id="cb3-210"><a href="#cb3-210" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb3-211"><a href="#cb3-211" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
-<span id="cb3-212"><a href="#cb3-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-213"><a href="#cb3-213" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> user_defined_example<span class="op">()</span></span>
-<span id="cb3-214"><a href="#cb3-214" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-215"><a href="#cb3-215" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;user defined type: </span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dt">my_type</span><span class="op">{</span><span class="dv">14</span><span class="op">});</span></span>
-<span id="cb3-216"><a href="#cb3-216" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-217"><a href="#cb3-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-218"><a href="#cb3-218" aria-hidden="true" tabindex="-1"></a><span class="co">// Custom error handler. Will be triggered on log failure.</span></span>
-<span id="cb3-219"><a href="#cb3-219" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> err_handler_example<span class="op">()</span></span>
-<span id="cb3-220"><a href="#cb3-220" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-221"><a href="#cb3-221" aria-hidden="true" tabindex="-1"></a>    <span class="co">// can be set globally or per logger(logger-&gt;set_error_handler(..))</span></span>
-<span id="cb3-222"><a href="#cb3-222" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_error_handler<span class="op">([](</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op"> &amp;</span>msg<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-223"><a href="#cb3-223" aria-hidden="true" tabindex="-1"></a>         printf<span class="op">(</span><span class="st">&quot;*** Custom log error handler: </span><span class="sc">%s</span><span class="st"> ***</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> msg<span class="op">.</span>c_str<span class="op">());</span> <span class="op">});</span></span>
-<span id="cb3-224"><a href="#cb3-224" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-225"><a href="#cb3-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-226"><a href="#cb3-226" aria-hidden="true" tabindex="-1"></a><span class="co">// syslog example (linux/osx/freebsd)</span></span>
-<span id="cb3-227"><a href="#cb3-227" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef _WIN32</span></span>
-<span id="cb3-228"><a href="#cb3-228" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/syslog_sink.h&quot;</span></span>
-<span id="cb3-229"><a href="#cb3-229" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> syslog_example<span class="op">()</span></span>
-<span id="cb3-230"><a href="#cb3-230" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-231"><a href="#cb3-231" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string<span class="op"> </span>ident <span class="op">=</span> <span class="st">&quot;spdlog-example&quot;</span><span class="op">;</span></span>
-<span id="cb3-232"><a href="#cb3-232" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> syslog_logger <span class="op">=</span> spdlog<span class="op">::</span>syslog_logger_mt<span class="op">(</span><span class="st">&quot;syslog&quot;</span><span class="op">,</span> ident<span class="op">,</span> LOG_PID<span class="op">);</span></span>
-<span id="cb3-233"><a href="#cb3-233" aria-hidden="true" tabindex="-1"></a>    syslog_logger<span class="op">-&gt;</span>warn<span class="op">(</span><span class="st">&quot;This is warning that will end up in syslog.&quot;</span><span class="op">);</span></span>
-<span id="cb3-234"><a href="#cb3-234" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-235"><a href="#cb3-235" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span>
-<span id="cb3-236"><a href="#cb3-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-237"><a href="#cb3-237" aria-hidden="true" tabindex="-1"></a><span class="co">// Android example.</span></span>
-<span id="cb3-238"><a href="#cb3-238" aria-hidden="true" tabindex="-1"></a><span class="pp">#if defined(__ANDROID__)</span></span>
-<span id="cb3-239"><a href="#cb3-239" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/android_sink.h&quot;</span></span>
-<span id="cb3-240"><a href="#cb3-240" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> android_example<span class="op">()</span></span>
-<span id="cb3-241"><a href="#cb3-241" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-242"><a href="#cb3-242" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string<span class="op"> </span>tag <span class="op">=</span> <span class="st">&quot;spdlog-android&quot;</span><span class="op">;</span></span>
-<span id="cb3-243"><a href="#cb3-243" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> android_logger <span class="op">=</span> spdlog<span class="op">::</span>android_logger_mt<span class="op">(</span><span class="st">&quot;android&quot;</span><span class="op">,</span> tag<span class="op">);</span></span>
-<span id="cb3-244"><a href="#cb3-244" aria-hidden="true" tabindex="-1"></a>    android_logger<span class="op">-&gt;</span>critical<span class="op">(</span><span class="st">&quot;Use </span><span class="sc">\&quot;</span><span class="st">adb shell logcat</span><span class="sc">\&quot;</span><span class="st"> to view this message.&quot;</span><span class="op">);</span></span>
-<span id="cb3-245"><a href="#cb3-245" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-246"><a href="#cb3-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-247"><a href="#cb3-247" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span>
-<span id="cb3-248"><a href="#cb3-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/stdout_color_sinks.h&quot;</span></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="co">// or #include &quot;spdlog/sinks/stdout_sinks.h&quot; if no colors needed.</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> stdout_logger_example<span class="op">()</span></span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create color multi threaded logger.</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> console <span class="op">=</span> spdlog<span class="op">::</span>stdout_color_mt<span class="op">(</span><span class="st">&quot;console&quot;</span><span class="op">);</span></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    <span class="co">// or for stderr:</span></span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>    <span class="co">// auto console = spdlog::stderr_color_mt(&quot;error-logger&quot;);</span></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/basic_file_sink.h&quot;</span></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> basic_example<span class="op">()</span></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create basic file logger (not rotated).</span></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> my_logger <span class="op">=</span> spdlog<span class="op">::</span>basic_logger_mt<span class="op">(</span><span class="st">&quot;file_logger&quot;</span><span class="op">,</span> <span class="st">&quot;logs/basic-log.txt&quot;</span><span class="op">);</span></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/rotating_file_sink.h&quot;</span></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> rotating_example<span class="op">()</span></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create a file rotating logger with 5mb size max and 3 rotated files.</span></span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> rotating_logger <span class="op">=</span></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>        spdlog<span class="op">::</span>rotating_logger_mt<span class="op">(</span><span class="st">&quot;some_logger_name&quot;</span><span class="op">,</span> <span class="st">&quot;logs/rotating.txt&quot;</span><span class="op">,</span> <span class="dv">1048576</span> <span class="op">*</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">);</span></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/daily_file_sink.h&quot;</span></span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> daily_example<span class="op">()</span></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create a daily logger - a new file is created every day on 2:30am.</span></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> daily_logger <span class="op">=</span> spdlog<span class="op">::</span>daily_logger_mt<span class="op">(</span><span class="st">&quot;daily_logger&quot;</span><span class="op">,</span> <span class="st">&quot;logs/daily.txt&quot;</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">30</span><span class="op">);</span></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="co">// Clone a logger and give it new name.</span></span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a><span class="co">// Useful for creating component/subsystem loggers from some &quot;root&quot; logger.</span></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> clone_example<span class="op">()</span></span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> network_logger <span class="op">=</span> spdlog<span class="op">::</span>default_logger<span class="op">()-&gt;</span>clone<span class="op">(</span><span class="st">&quot;network&quot;</span><span class="op">);</span></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>    network_logger<span class="op">-&gt;</span>info<span class="op">(</span><span class="st">&quot;Logging network stuff..&quot;</span><span class="op">);</span></span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/async.h&quot;</span></span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> async_example<span class="op">()</span></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Default thread pool settings can be modified *before* creating the async logger:</span></span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>    <span class="co">// spdlog::init_thread_pool(32768, 1); // queue with max 32k items 1 backing thread.</span></span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> async_file <span class="op">=</span></span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>        spdlog<span class="op">::</span>basic_logger_mt<span class="op">&lt;</span>spdlog<span class="op">::</span>async_factory<span class="op">&gt;(</span><span class="st">&quot;async_file_logger&quot;</span><span class="op">,</span> <span class="st">&quot;logs/async_log.txt&quot;</span><span class="op">);</span></span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>    <span class="co">// alternatively:</span></span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>    <span class="co">// auto async_file =</span></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>    <span class="co">//     spdlog::create_async&lt;spdlog::sinks::basic_file_sink_mt&gt;(&quot;async_file_logger&quot;,</span></span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>    <span class="co">//     &quot;logs/async_log.txt&quot;);</span></span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">101</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>        async_file<span class="op">-&gt;</span>info<span class="op">(</span><span class="st">&quot;Async message #</span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> i<span class="op">);</span></span>
+<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a><span class="co">// Log binary data as hex.</span></span>
+<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a><span class="co">// Many types of std::container&lt;char&gt; types can be used.</span></span>
+<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a><span class="co">// Iterator ranges are supported too.</span></span>
+<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a><span class="co">// Format flags:</span></span>
+<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a><span class="co">// {:X} - print in uppercase.</span></span>
+<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a><span class="co">// {:s} - don&#39;t separate each byte with space.</span></span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="co">// {:p} - don&#39;t print the position on each line start.</span></span>
+<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a><span class="co">// {:n} - don&#39;t split the output to lines.</span></span>
+<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/fmt/bin_to_hex.h&quot;</span></span>
+<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> binary_example<span class="op">()</span></span>
+<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">char</span><span class="op">&gt;</span> buf<span class="op">;</span></span>
+<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">80</span><span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a>        buf<span class="op">.</span>push_back<span class="op">(</span><span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">char</span><span class="op">&gt;(</span>i <span class="op">&amp;</span> <span class="bn">0xff</span><span class="op">));</span></span>
+<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Binary example: </span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> spdlog<span class="op">::</span>to_hex<span class="op">(</span>buf<span class="op">));</span></span>
+<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Another binary example:{:n}&quot;</span><span class="op">,</span></span>
+<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>                 spdlog<span class="op">::</span>to_hex<span class="op">(</span><span class="bu">std::</span>begin<span class="op">(</span>buf<span class="op">),</span> <span class="bu">std::</span>begin<span class="op">(</span>buf<span class="op">)</span> <span class="op">+</span> <span class="dv">10</span><span class="op">));</span></span>
+<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>    <span class="co">// more examples:</span></span>
+<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>    <span class="co">// logger-&gt;info(&quot;uppercase: {:X}&quot;, spdlog::to_hex(buf));</span></span>
+<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>    <span class="co">// logger-&gt;info(&quot;uppercase, no delimiters: {:Xs}&quot;, spdlog::to_hex(buf));</span></span>
+<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a>    <span class="co">// logger-&gt;info(&quot;uppercase, no delimiters, no position info: {:Xsp}&quot;, spdlog::to_hex(buf));</span></span>
+<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a><span class="co">// Compile time log levels.</span></span>
+<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a><span class="co">// define SPDLOG_ACTIVE_LEVEL to required level (e.g. SPDLOG_LEVEL_TRACE)</span></span>
+<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> trace_example<span class="op">()</span></span>
+<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>    <span class="co">// trace from default logger</span></span>
+<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a>    SPDLOG_TRACE<span class="op">(</span><span class="st">&quot;Some trace message.. </span><span class="sc">{}</span><span class="st"> ,</span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="fl">3.23</span><span class="op">);</span></span>
+<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a>    <span class="co">// debug from default logger</span></span>
+<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a>    SPDLOG_DEBUG<span class="op">(</span><span class="st">&quot;Some debug message.. </span><span class="sc">{}</span><span class="st"> ,</span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="fl">3.23</span><span class="op">);</span></span>
+<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a>    <span class="co">// trace from logger object</span></span>
+<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> logger <span class="op">=</span> spdlog<span class="op">::</span>get<span class="op">(</span><span class="st">&quot;file_logger&quot;</span><span class="op">);</span></span>
+<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a>    SPDLOG_LOGGER_TRACE<span class="op">(</span>logger<span class="op">,</span> <span class="st">&quot;another trace message&quot;</span><span class="op">);</span></span>
+<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a><span class="co">// A logger with multiple sinks (stdout and file) - each with a different format and log level.</span></span>
+<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> multi_sink_example<span class="op">()</span></span>
+<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> console_sink <span class="op">=</span> <span class="bu">std::</span>make_shared<span class="op">&lt;</span>spdlog<span class="op">::</span>sinks<span class="op">::</span>stdout_color_sink_mt<span class="op">&gt;();</span></span>
+<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>    console_sink<span class="op">-&gt;</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>warn<span class="op">);</span></span>
+<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a>    console_sink<span class="op">-&gt;</span>set_pattern<span class="op">(</span><span class="st">&quot;[multi_sink_example] [%^%l%$] %v&quot;</span><span class="op">);</span></span>
+<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> file_sink <span class="op">=</span></span>
+<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>make_shared<span class="op">&lt;</span>spdlog<span class="op">::</span>sinks<span class="op">::</span>basic_file_sink_mt<span class="op">&gt;(</span><span class="st">&quot;logs/multisink.txt&quot;</span><span class="op">,</span> <span class="kw">true</span><span class="op">);</span></span>
+<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a>    file_sink<span class="op">-&gt;</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>trace<span class="op">);</span></span>
+<span id="cb3-195"><a href="#cb3-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-196"><a href="#cb3-196" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>logger logger<span class="op">(</span><span class="st">&quot;multi_sink&quot;</span><span class="op">,</span> <span class="op">{</span>console_sink<span class="op">,</span> file_sink<span class="op">});</span></span>
+<span id="cb3-197"><a href="#cb3-197" aria-hidden="true" tabindex="-1"></a>    logger<span class="op">.</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>debug<span class="op">);</span></span>
+<span id="cb3-198"><a href="#cb3-198" aria-hidden="true" tabindex="-1"></a>    logger<span class="op">.</span>warn<span class="op">(</span><span class="st">&quot;this should appear in both console and file&quot;</span><span class="op">);</span></span>
+<span id="cb3-199"><a href="#cb3-199" aria-hidden="true" tabindex="-1"></a>    logger<span class="op">.</span>info<span class="op">(</span><span class="st">&quot;this message should not appear in the console, only in the file&quot;</span><span class="op">);</span></span>
+<span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-201"><a href="#cb3-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-202"><a href="#cb3-202" aria-hidden="true" tabindex="-1"></a><span class="co">// User defined types logging by implementing operator&lt;&lt;</span></span>
+<span id="cb3-203"><a href="#cb3-203" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/fmt/ostr.h&quot;</span><span class="pp"> </span><span class="co">// must be included</span></span>
+<span id="cb3-204"><a href="#cb3-204" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> <span class="dt">my_type</span></span>
+<span id="cb3-205"><a href="#cb3-205" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-206"><a href="#cb3-206" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i<span class="op">;</span></span>
+<span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a>    <span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> OStream<span class="op">&gt;</span></span>
+<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a>    <span class="kw">friend</span> OStream <span class="op">&amp;</span><span class="kw">operator</span><span class="op">&lt;&lt;(</span>OStream <span class="op">&amp;</span>os<span class="op">,</span> <span class="at">const</span> <span class="dt">my_type</span> <span class="op">&amp;</span>c<span class="op">)</span></span>
+<span id="cb3-209"><a href="#cb3-209" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb3-210"><a href="#cb3-210" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> os <span class="op">&lt;&lt;</span> <span class="st">&quot;[my_type i=&quot;</span> <span class="op">&lt;&lt;</span> c<span class="op">.</span>i <span class="op">&lt;&lt;</span> <span class="st">&quot;]&quot;</span><span class="op">;</span></span>
+<span id="cb3-211"><a href="#cb3-211" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-212"><a href="#cb3-212" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb3-213"><a href="#cb3-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-214"><a href="#cb3-214" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> user_defined_example<span class="op">()</span></span>
+<span id="cb3-215"><a href="#cb3-215" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-216"><a href="#cb3-216" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;user defined type: </span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dt">my_type</span><span class="op">{</span><span class="dv">14</span><span class="op">});</span></span>
+<span id="cb3-217"><a href="#cb3-217" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-218"><a href="#cb3-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-219"><a href="#cb3-219" aria-hidden="true" tabindex="-1"></a><span class="co">// Custom error handler. Will be triggered on log failure.</span></span>
+<span id="cb3-220"><a href="#cb3-220" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> err_handler_example<span class="op">()</span></span>
+<span id="cb3-221"><a href="#cb3-221" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-222"><a href="#cb3-222" aria-hidden="true" tabindex="-1"></a>    <span class="co">// can be set globally or per logger(logger-&gt;set_error_handler(..))</span></span>
+<span id="cb3-223"><a href="#cb3-223" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_error_handler<span class="op">([](</span><span class="at">const</span> <span class="bu">std::</span>string <span class="op">&amp;</span>msg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-224"><a href="#cb3-224" aria-hidden="true" tabindex="-1"></a>         printf<span class="op">(</span><span class="st">&quot;*** Custom log error handler: </span><span class="sc">%s</span><span class="st"> ***</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> msg<span class="op">.</span>c_str<span class="op">());</span> <span class="op">});</span></span>
+<span id="cb3-225"><a href="#cb3-225" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-226"><a href="#cb3-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-227"><a href="#cb3-227" aria-hidden="true" tabindex="-1"></a><span class="co">// syslog example (linux/osx/freebsd)</span></span>
+<span id="cb3-228"><a href="#cb3-228" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef _WIN32</span></span>
+<span id="cb3-229"><a href="#cb3-229" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/syslog_sink.h&quot;</span></span>
+<span id="cb3-230"><a href="#cb3-230" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> syslog_example<span class="op">()</span></span>
+<span id="cb3-231"><a href="#cb3-231" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-232"><a href="#cb3-232" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string ident <span class="op">=</span> <span class="st">&quot;spdlog-example&quot;</span><span class="op">;</span></span>
+<span id="cb3-233"><a href="#cb3-233" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> syslog_logger <span class="op">=</span> spdlog<span class="op">::</span>syslog_logger_mt<span class="op">(</span><span class="st">&quot;syslog&quot;</span><span class="op">,</span> ident<span class="op">,</span> LOG_PID<span class="op">);</span></span>
+<span id="cb3-234"><a href="#cb3-234" aria-hidden="true" tabindex="-1"></a>    syslog_logger<span class="op">-&gt;</span>warn<span class="op">(</span><span class="st">&quot;This is warning that will end up in syslog.&quot;</span><span class="op">);</span></span>
+<span id="cb3-235"><a href="#cb3-235" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-236"><a href="#cb3-236" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span>
+<span id="cb3-237"><a href="#cb3-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-238"><a href="#cb3-238" aria-hidden="true" tabindex="-1"></a><span class="co">// Android example.</span></span>
+<span id="cb3-239"><a href="#cb3-239" aria-hidden="true" tabindex="-1"></a><span class="pp">#if defined(__ANDROID__)</span></span>
+<span id="cb3-240"><a href="#cb3-240" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/android_sink.h&quot;</span></span>
+<span id="cb3-241"><a href="#cb3-241" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> android_example<span class="op">()</span></span>
+<span id="cb3-242"><a href="#cb3-242" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-243"><a href="#cb3-243" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string tag <span class="op">=</span> <span class="st">&quot;spdlog-android&quot;</span><span class="op">;</span></span>
+<span id="cb3-244"><a href="#cb3-244" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> android_logger <span class="op">=</span> spdlog<span class="op">::</span>android_logger_mt<span class="op">(</span><span class="st">&quot;android&quot;</span><span class="op">,</span> tag<span class="op">);</span></span>
+<span id="cb3-245"><a href="#cb3-245" aria-hidden="true" tabindex="-1"></a>    android_logger<span class="op">-&gt;</span>critical<span class="op">(</span><span class="st">&quot;Use </span><span class="sc">\&quot;</span><span class="st">adb shell logcat</span><span class="sc">\&quot;</span><span class="st"> to view this message.&quot;</span><span class="op">);</span></span>
+<span id="cb3-246"><a href="#cb3-246" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-247"><a href="#cb3-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-248"><a href="#cb3-248" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span>
 <span id="cb3-249"><a href="#cb3-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-250"><a href="#cb3-250" aria-hidden="true" tabindex="-1"></a><span class="co">/*** R</span></span>
-<span id="cb3-251"><a href="#cb3-251" aria-hidden="true" tabindex="-1"></a><span class="co">exampleTwo()</span></span>
-<span id="cb3-252"><a href="#cb3-252" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div>
+<span id="cb3-250"><a href="#cb3-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-251"><a href="#cb3-251" aria-hidden="true" tabindex="-1"></a><span class="co">/*** R</span></span>
+<span id="cb3-252"><a href="#cb3-252" aria-hidden="true" tabindex="-1"></a><span class="co">exampleTwo()</span></span>
+<span id="cb3-253"><a href="#cb3-253" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div>
 <p>We are not showing the output here; it can be compiled, linked,
 loaded and run just as above by simply passing the filename to
 <code>Rcpp::sourceCpp()</code>. Note that is will create a few
@@ -517,41 +526,42 @@ temporary directory.</p>
 not use this as a starting point for your package as
 <code>R CMD check</code> will protest about use of
 <code>stdout</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/spdlog.h&quot;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/stdout_color_sinks.h&quot;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::depends(RcppSpdlog)]]</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> exampleThree<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">auto</span> console <span class="op">=</span> spdlog<span class="op">::</span>stdout_color_mt<span class="op">(</span><span class="st">&quot;console&quot;</span><span class="op">);</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// change log pattern (changed from [%H:%M:%S %z] [%n] [%^---%L---%$] )</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>set_pattern<span class="op">(</span><span class="st">&quot;[%H:%M:%S.</span><span class="sc">%f</span><span class="st">] [%^%L%$] [thread %t] %v&quot;</span><span class="op">);</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;This an info message with custom format&quot;</span><span class="op">);</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">//spdlog::set_pattern(&quot;%+&quot;); // back to default format</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Welcome to spdlog!&quot;</span><span class="op">);</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>error<span class="op">(</span><span class="st">&quot;Some error message with arg: </span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>warn<span class="op">(</span><span class="st">&quot;Easy padding in numbers like </span><span class="sc">{:08d}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">12</span><span class="op">);</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>critical<span class="op">(</span><span class="st">&quot;Support for int: </span><span class="sc">{0:d}</span><span class="st">;  hex: </span><span class="sc">{0:x}</span><span class="st">;  oct: </span><span class="sc">{0:o}</span><span class="st">; bin: </span><span class="sc">{0:b}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">42</span><span class="op">);</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Support for floats </span><span class="sc">{:03.2f}</span><span class="st">&quot;</span><span class="op">,</span> <span class="fl">1.23456</span><span class="op">);</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Positional args are </span><span class="sc">{1}</span><span class="st"> </span><span class="sc">{0}</span><span class="st">..&quot;</span><span class="op">,</span> <span class="st">&quot;too&quot;</span><span class="op">,</span> <span class="st">&quot;supported&quot;</span><span class="op">);</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;</span><span class="sc">{:&lt;30}</span><span class="st">&quot;</span><span class="op">,</span> <span class="st">&quot;left aligned&quot;</span><span class="op">);</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/spdlog.h&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;spdlog/sinks/stdout_color_sinks.h&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::depends(RcppSpdlog)]]</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> exampleThree<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">auto</span> console <span class="op">=</span> spdlog<span class="op">::</span>stdout_color_mt<span class="op">(</span><span class="st">&quot;console&quot;</span><span class="op">);</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// change log pattern (changed from [%H:%M:%S %z] [%n] [%^---%L---%$] )</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>set_pattern<span class="op">(</span><span class="st">&quot;[%H:%M:%S.</span><span class="sc">%f</span><span class="st">] [%^%L%$] [thread %t] %v&quot;</span><span class="op">);</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;This an info message with custom format&quot;</span><span class="op">);</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">//spdlog::set_pattern(&quot;%+&quot;); // back to default format</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Welcome to spdlog!&quot;</span><span class="op">);</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>error<span class="op">(</span><span class="st">&quot;Some error message with arg: </span><span class="sc">{}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>warn<span class="op">(</span><span class="st">&quot;Easy padding in numbers like </span><span class="sc">{:08d}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">12</span><span class="op">);</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>critical<span class="op">(</span><span class="st">&quot;Support for int: </span><span class="sc">{0:d}</span><span class="st">;  hex: </span><span class="sc">{0:x}</span><span class="st">;  oct: </span><span class="sc">{0:o}</span><span class="st">; bin: </span><span class="sc">{0:b}</span><span class="st">&quot;</span><span class="op">,</span> <span class="dv">42</span><span class="op">);</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Support for floats </span><span class="sc">{:03.2f}</span><span class="st">&quot;</span><span class="op">,</span> <span class="fl">1.23456</span><span class="op">);</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;Positional args are </span><span class="sc">{1}</span><span class="st"> </span><span class="sc">{0}</span><span class="st">..&quot;</span><span class="op">,</span> <span class="st">&quot;too&quot;</span><span class="op">,</span> <span class="st">&quot;supported&quot;</span><span class="op">);</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>info<span class="op">(</span><span class="st">&quot;</span><span class="sc">{:&lt;30}</span><span class="st">&quot;</span><span class="op">,</span> <span class="st">&quot;left aligned&quot;</span><span class="op">);</span></span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// added to this example file allow multiple runs of different package functions</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;console&quot;</span><span class="op">);</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co">/*** R</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co">exampleThree()</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// added to this example file allow multiple runs of different package functions</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  spdlog<span class="op">::</span>drop<span class="op">(</span><span class="st">&quot;console&quot;</span><span class="op">);</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co">/*** R</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co">exampleThree()</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div>
 <p>When running this example in a terminal capable of displaying colour
 escape sequence, the logging levels are distinguished by colour. This
 ranges from green (“info”) to yellow (“warning”) to red (“error”) and
@@ -559,14 +569,14 @@ white-on-red (“critical”). Not that in this vignette color from standard
 output does how not show (in the keep-it-simple-mode we are using
 here).</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> exampleThree<span class="er">(</span><span class="kw">)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260692]</span> [I] [thread 2502026] This an info message with custom format</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260715]</span> [I] [thread 2502026] Welcome to spdlog!</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260732]</span> [E] [thread 2502026] Some error message with arg: 1</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260734]</span> [W] [thread 2502026] Easy padding in numbers like 00000012</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260736]</span> [C] [thread 2502026] Support for int: 42<span class="kw">;</span>  <span class="ex">hex:</span> 2a<span class="kw">;</span>  <span class="ex">oct:</span> 52<span class="kw">;</span> <span class="ex">bin:</span> 101010</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260739]</span> [I] [thread 2502026] Support for floats 1.23</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260741]</span> [I] [thread 2502026] Positional args are supported too..</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260743]</span> [I] [thread 2502026] left aligned</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260692]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2502026] This an info message with custom format</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260715]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2502026] Welcome to spdlog!</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260732]</span> <span class="pp">[</span><span class="ss">E</span><span class="pp">]</span> [thread 2502026] Some error message with arg: 1</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260734]</span> <span class="pp">[</span><span class="ss">W</span><span class="pp">]</span> [thread 2502026] Easy padding in numbers like 00000012</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260736]</span> <span class="pp">[</span><span class="ss">C</span><span class="pp">]</span> [thread 2502026] Support for int: 42<span class="kw">;</span>  <span class="ex">hex:</span> 2a<span class="kw">;</span>  <span class="ex">oct:</span> 52<span class="kw">;</span> <span class="ex">bin:</span> 101010</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260739]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2502026] Support for floats 1.23</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260741]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2502026] Positional args are supported too..</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[14:47:52.260743]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2502026] left aligned</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span></span></code></pre></div>
 <h2 id="fourth-example-dedicated-r-logger">Fourth Example: Dedicated R
 Logger</h2>
@@ -590,7 +600,7 @@ included as an example in the package. We include the source file <a href="https
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> exampleRsink<span class="op">()</span> <span class="op">{</span></span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string<span class="op"> </span>logname <span class="op">=</span> <span class="st">&quot;fromR&quot;</span><span class="op">;</span>                          <span class="co">// fix a name for this logger</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string logname <span class="op">=</span> <span class="st">&quot;fromR&quot;</span><span class="op">;</span>                          <span class="co">// fix a name for this logger</span></span>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> sp <span class="op">=</span> spdlog<span class="op">::</span>get<span class="op">(</span>logname<span class="op">);</span>                         <span class="co">// retrieve existing one</span></span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>sp <span class="op">==</span> <span class="kw">nullptr</span><span class="op">)</span> sp <span class="op">=</span> spdlog<span class="op">::</span>r_sink_mt<span class="op">(</span>logname<span class="op">);</span>     <span class="co">// or create new one if needed</span></span>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_default_logger<span class="op">(</span>sp<span class="op">);</span>                         <span class="co">// and set as default</span></span>
@@ -624,7 +634,7 @@ included as an example in the package. We include the source file <a href="https
 <span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="co">//&#39; Unrecognised names are equivalent to \sQuote{off}.</span></span>
 <span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co">//&#39; @return Nothing is returned.</span></span>
 <span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setLogLevel<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op"> &amp;</span>name<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setLogLevel<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string <span class="op">&amp;</span>name<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>    spdlog<span class="op">::</span>set_level<span class="op">(</span>spdlog<span class="op">::</span>level<span class="op">::</span>from_str<span class="op">(</span>name<span class="op">));</span></span>
 <span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The example file contains three key aspects to highlight: - use of
@@ -633,15 +643,15 @@ the very convenient <code>stopwatch</code> object - use of logging
 levels</p>
 <p>We highlight these below after first showing the relevant output:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> exampleRsink<span class="er">(</span><span class="kw">)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076751]</span> [fromR] [I] [thread 2453030] Welcome to spdlog!</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076809]</span> [fromR] [E] [thread 2453030] Some error message with arg: 1</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076823]</span> [fromR] [I] [thread 2453030] Elapsed time: 9.6104e-05</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076833]</span> [fromR] [W] [thread 2453030] Easy padding in numbers like 00000012</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076844]</span> [fromR] [C] [thread 2453030] Support for int: 42<span class="kw">;</span>  <span class="ex">hex:</span> 2a<span class="kw">;</span>  <span class="ex">oct:</span> 52<span class="kw">;</span> <span class="ex">bin:</span> 101010</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076853]</span> [fromR] [I] [thread 2453030] Support for floats 1.23</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076871]</span> [fromR] [I] [thread 2453030] Positional args are supported too..</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076879]</span> [fromR] [I] [thread 2453030] left aligned</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076892]</span> [fromR] [I] [thread 2453030] Elapsed time: 0.000167057</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076751]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2453030] Welcome to spdlog!</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076809]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">E</span><span class="pp">]</span> [thread 2453030] Some error message with arg: 1</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076823]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2453030] Elapsed time: 9.6104e-05</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076833]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">W</span><span class="pp">]</span> [thread 2453030] Easy padding in numbers like 00000012</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076844]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">C</span><span class="pp">]</span> [thread 2453030] Support for int: 42<span class="kw">;</span>  <span class="ex">hex:</span> 2a<span class="kw">;</span>  <span class="ex">oct:</span> 52<span class="kw">;</span> <span class="ex">bin:</span> 101010</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076853]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2453030] Support for floats 1.23</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076871]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2453030] Positional args are supported too..</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076879]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2453030] left aligned</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:52:12.076892]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">I</span><span class="pp">]</span> [thread 2453030] Elapsed time: 0.000167057</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span></span></code></pre></div>
 <h4 id="r-specific-sink">R-specific sink</h4>
 <p><a href="https://github.com/gabime/spdlog">spdlog</a> has the ability
@@ -667,8 +677,8 @@ provided. Usage is simple: after calling it with a given level, only
 message equal to it or higher are shown as the next example shows.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> setLogLevel<span class="er">(</span><span class="st">&quot;error&quot;</span><span class="kw">)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span> exampleRsink<span class="er">(</span><span class="kw">)</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:54:12.666261]</span> [fromR] [E] [thread 2453030] Some error message with arg: 1</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:54:12.666286]</span> [fromR] [C] [thread 2453030] Support for int: 42<span class="kw">;</span>  <span class="ex">hex:</span> 2a<span class="kw">;</span>  <span class="ex">oct:</span> 52<span class="kw">;</span> <span class="ex">bin:</span> 101010</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:54:12.666261]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">E</span><span class="pp">]</span> [thread 2453030] Some error message with arg: 1</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[16:54:12.666286]</span> <span class="pp">[</span><span class="ss">fromR</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">C</span><span class="pp">]</span> [thread 2453030] Support for int: 42<span class="kw">;</span>  <span class="ex">hex:</span> 2a<span class="kw">;</span>  <span class="ex">oct:</span> 52<span class="kw">;</span> <span class="ex">bin:</span> 101010</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span><span class="op">&gt;</span></span></code></pre></div>
 <p>By requestion level ‘error’, message of level ‘info’, ‘warning’ or
 ‘debug’ are suppressed but messages levels ‘error’ or ‘critical’ as
@@ -685,7 +695,7 @@ initialize its facilities during startup.</p>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">//&#39;</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setDefault<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string<span class="op"> </span>logname <span class="op">=</span> <span class="st">&quot;fromR&quot;</span><span class="op">;</span>                          <span class="co">// fix a name for this logger</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>string logname <span class="op">=</span> <span class="st">&quot;fromR&quot;</span><span class="op">;</span>                          <span class="co">// fix a name for this logger</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> sp <span class="op">=</span> spdlog<span class="op">::</span>get<span class="op">(</span>logname<span class="op">);</span>                         <span class="co">// retrieve existing one</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>sp <span class="op">==</span> <span class="kw">nullptr</span><span class="op">)</span> sp <span class="op">=</span> spdlog<span class="op">::</span>r_sink_mt<span class="op">(</span>logname<span class="op">);</span>     <span class="co">// or create new one if needed</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    sp<span class="op">-&gt;</span>set_pattern<span class="op">(</span><span class="st">&quot;[%H:%M:%S.</span><span class="sc">%f</span><span class="st">] [%^%L%$] %v&quot;</span><span class="op">);</span></span>
@@ -767,9 +777,9 @@ illustrates.</p>
 <p>The interface expects a character value so use from either
 <code>sprintf()</code> or a string-interpolating helper such as
 <code>glue::glue</code> can be used:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">log_info</span>(<span class="fu">sprintf</span>(<span class="st">&quot;We can %s a %s with values %d&quot;</span>, <span class="st">&quot;build&quot;</span>, <span class="st">&quot;text&quot;</span>, 42L))</span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">log_info</span>(<span class="fu">sprintf</span>(<span class="st">&quot;We can %s a %s with values %d&quot;</span>, <span class="st">&quot;build&quot;</span>, <span class="st">&quot;text&quot;</span>, <span class="dv">42</span><span class="dt">L</span>))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span><span class="sc">:</span><span class="dv">03</span><span class="sc">:</span><span class="fl">37.728</span>] [demo] [info] We can build a text with values <span class="dv">42</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">log_info</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;We can {a} a {b} with values {v}&quot;</span>, <span class="at">a=</span><span class="st">&quot;build&quot;</span>, <span class="at">b=</span><span class="st">&quot;text&quot;</span>, <span class="at">v=</span>42L))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">log_info</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;We can {a} a {b} with values {v}&quot;</span>, <span class="at">a=</span><span class="st">&quot;build&quot;</span>, <span class="at">b=</span><span class="st">&quot;text&quot;</span>, <span class="at">v=</span><span class="dv">42</span><span class="dt">L</span>))</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span><span class="sc">:</span><span class="dv">03</span><span class="sc">:</span><span class="fl">46.395</span>] [demo] [info] We can build a text with values <span class="dv">42</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span></span></code></pre></div>
 <h2 id="eight-example-access-from-another-r-package">Eight Example:
@@ -831,7 +841,7 @@ compelling we also created a sibbling R package <a href="https://github.com/edde
 <code>spdl</code> namespace in R allowing _the exact same format strings
 too`.</p>
 <p>So</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>spdl<span class="sc">::</span><span class="fu">info</span>(<span class="st">&quot;We {} values {} and {}&quot;</span>, <span class="st">&quot;log&quot;</span>, 42L, <span class="fl">1.23</span>);</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>spdl<span class="sc">::</span><span class="fu">info</span>(<span class="st">&quot;We {} values {} and {}&quot;</span>, <span class="st">&quot;log&quot;</span>, <span class="dv">42</span><span class="dt">L</span>, <span class="fl">1.23</span>);</span></code></pre></div>
 <p>now also works from R using the same formatting string. We inted to
 upload <code>spdl</code> to CRAN too.</p>
 <p>Note that other all other formatting options are supported from R:
