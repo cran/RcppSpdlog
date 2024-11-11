@@ -5,6 +5,10 @@
 // this define is important to no include another logger pulling in stdout
 #define SPDLOG_DISABLE_DEFAULT_LOGGER 1
 
+#if defined(SPDLOG_USE_STD_FORMAT) && __cplusplus < 202002L
+#error SPDLOG_USE_STD_FORMAT should only be set when compiling with C++20 or greater
+#endif
+
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/base_sink.h"
 #include "spdlog/sinks/basic_file_sink.h"
@@ -29,7 +33,13 @@ protected:
         // sending it to its final destination:
         spdlog::memory_buf_t formatted;
         spdlog::sinks::base_sink<Mutex>::formatter_->format(msg, formatted);
+
+        // When using C++20 with SPDLOG_USE_STD_FORMAT flag spdlog::memory_buf_t is an alias of std::string
+        #ifdef SPDLOG_USE_STD_FORMAT
+        Rcpp::Rcout << formatted;
+        #else
         Rcpp::Rcout << fmt::to_string(formatted);
+        #endif
     }
 
     void flush_() override {
