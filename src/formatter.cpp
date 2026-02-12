@@ -40,6 +40,7 @@ std::string formatter(const std::string s, std::vector<std::string> v) {
     size_t n = v.size();
     switch (n) {
 #if defined(SPDLOG_USE_STD_FORMAT) && __cplusplus >= 202002L
+        // As of 2026-02 we do _not_ set SPDLOG_USE_STD_FORMAT so this section is unused
         case 0: return std::vformat(std::string_view(s), std::make_format_args());
         case 1: return std::vformat(std::string_view(s), unpack_vector<1>(v));
         case 2: return std::vformat(std::string_view(s), unpack_vector<2>(v));
@@ -59,6 +60,28 @@ std::string formatter(const std::string s, std::vector<std::string> v) {
         default: {
             Rcpp::warning("Only up to fifteen arguments support for now.");
             return std::vformat(std::string_view(s), unpack_vector<12>(v));
+        }
+#elif __cplusplus >= 202002L
+        // This section is now the default under C++20 or later
+        case 0: return fmt::format(fmt::runtime(s));
+        case 1: return fmt::format(fmt::runtime(s), std::string(v[0]));
+        case 2: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]));
+        case 3: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]));
+        case 4: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]));
+        case 5: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]));
+        case 6: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]));
+        case 7: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]), std::string(v[6]));
+        case 8: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]), std::string(v[6]), std::string(v[7]));
+        case 9: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]), std::string(v[6]), std::string(v[7]), std::string(v[8]));
+        case 10: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]), std::string(v[6]), std::string(v[7]), std::string(v[8]), std::string(v[9]));
+        case 11: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]), std::string(v[6]), std::string(v[7]), std::string(v[8]), std::string(v[9]), std::string(v[10]));
+        case 12: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]), std::string(v[6]), std::string(v[7]), std::string(v[8]), std::string(v[9]), std::string(v[10]), std::string(v[11]));
+        case 13: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]), std::string(v[6]), std::string(v[7]), std::string(v[8]), std::string(v[9]), std::string(v[10]), std::string(v[11]), std::string(v[12]));
+        case 14: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]), std::string(v[6]), std::string(v[7]), std::string(v[8]), std::string(v[9]), std::string(v[10]), std::string(v[11]), std::string(v[12]), std::string(v[13]));
+        case 15: return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]), std::string(v[6]), std::string(v[7]), std::string(v[8]), std::string(v[9]), std::string(v[10]), std::string(v[11]), std::string(v[12]), std::string(v[13]), std::string(v[14]));
+        default: {
+            Rcpp::warning("Only up to fifteen arguments support for now.");
+            return fmt::format(fmt::runtime(s), std::string(v[0]), std::string(v[1]), std::string(v[2]), std::string(v[3]), std::string(v[4]), std::string(v[5]), std::string(v[6]), std::string(v[7]), std::string(v[8]), std::string(v[9]), std::string(v[10]), std::string(v[11]));
         }
 #else
         case 0: return fmt::format(s);
