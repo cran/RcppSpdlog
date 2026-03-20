@@ -1,3 +1,15 @@
+2026-03-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Version 0.0.28
+
+2026-03-14  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro release version
+
+	* src/RcppExports.cpp: Regenerated under current Rcpp switching to (Rf_error)
+
+	* .github/workflows/ci.yaml: Switch to dev version with rapt use
+
 2026-02-12  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Version 0.0.27
@@ -8,6 +20,7 @@
 
 	* inst/include/RcppSpdlog: Disallow use of std::format under C++20;
 	intended to be temporary while a better solutions is worked out
+	* src/formatter.cpp: Switch back to fmt::format under C++20
 
 2026-01-27  Dirk Eddelbuettel  <edd@debian.org>
 
